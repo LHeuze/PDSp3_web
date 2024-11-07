@@ -10,9 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_06_150440) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_06_153016) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "lockers", force: :cascade do |t|
+    t.string "number"
+    t.text "password", default: [], array: true
+    t.bigint "owner_id"
+    t.string "status", default: "locked"
+    t.datetime "last_accessed"
+    t.string "model_version"
+    t.integer "access_count", default: 0
+    t.boolean "synced", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["number"], name: "index_lockers_on_number", unique: true
+    t.index ["owner_id"], name: "index_lockers_on_owner_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -27,4 +42,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_06_150440) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "lockers", "users", column: "owner_id"
 end
