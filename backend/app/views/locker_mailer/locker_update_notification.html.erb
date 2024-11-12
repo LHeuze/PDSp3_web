@@ -1,14 +1,12 @@
-<p>Hello,</p>
+<p>Hola,</p>
 
-<p>Your assigned locker (Number: <%= @locker.number %>) has been updated with a new password.</p>
+<p>Tu casillero (Number: <%= @locker.number %>) ha sido modificado y tiene nueva contraseña.</p>
 
 <p>New Password Gestures:</p>
 <ul>
   <% @new_password.each do |gesture| %>
+    <%= image_tag attachments.inline["#{gesture.downcase}.jpg"].url, style: "width: 100px; height: 100px; vertical-align: middle;" %>
     <li><%= gesture.capitalize %></li>
   <% end %>
 </ul>
-
-<p>Please follow the instructions provided to access your locker. Contact support if you have any questions.</p>
-
-<p>Best regards,<br>Your Locker Management Team</p>
+<p>Para abrir el casillero acerca la mano al sensor en la caja y luego realiza los gestos en el orden que se muestra en este mail.</p>
