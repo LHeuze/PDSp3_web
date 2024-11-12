@@ -8,8 +8,8 @@ class User < ApplicationRecord
 
   # Method to generate a JWT token for the user
   def generate_auth_token
-    expiration = Rails.application.credentials.dig(:jwt, :expiration_time)&.to_i || 24.hours.from_now.to_i
-    payload = { user_id: self.id, exp: expiration }
+    exp = Time.now.to_i + 7 * 24 * 3600 # 7 days from now
+    payload = { user_id: id, exp: exp }
     JWT.encode(payload, Rails.application.credentials.dig(:jwt, :secret_key), 'HS256')
   end
   

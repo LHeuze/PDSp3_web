@@ -14,7 +14,7 @@ function LockersPage() {
 
     axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers`, {
       headers: {
-        'Authorization': token,
+        Authorization: token,
       },
     })
       .then(response => {

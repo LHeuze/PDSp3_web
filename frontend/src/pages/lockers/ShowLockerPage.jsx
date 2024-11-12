@@ -12,6 +12,7 @@ function ShowLockerPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem('authToken');
     axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers/${lockerId}`, {
       headers: {
         Authorization: `Bearer ${token}`,

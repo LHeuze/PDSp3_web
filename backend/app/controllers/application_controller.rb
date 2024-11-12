@@ -1,21 +1,17 @@
 class ApplicationController < ActionController::API
-    include ActionController::Cookies # If you plan to use cookies
   
     before_action :authenticate_request
   
     private
   
     def authenticate_request
-      header = request.headers['Authorization']
-      header = header.split(' ').last if header
+      token = request.headers['Authorization']&.split(' ')&.last
 
-      Rails.logger.info("Authorization Header: #{header}")
-      
-      decoded = JwtService.decode(header)
-      if decoded
-        @current_user = User.find_by(id: decoded['user_id'])
+      decoded_token = JwtService.decode(token)
+      if decoded_token.present?
+        @current_user = User.find(decoded_token[:user_id])
       else
-        render json: { error: 'Unauthorized' }, status: :unauthorized
+        render json: { error: 'Not Authorized' }, status: :unauthorized
       end
     end
   end
