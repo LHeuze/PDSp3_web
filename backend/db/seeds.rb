@@ -17,6 +17,7 @@
 # Create two users with different roles
 u1 = User.create!(
   email: "admin@example.com",
+  name: "admin1",
   password: "password",
   password_confirmation: "password",
   role: "locker_admin"
@@ -24,6 +25,7 @@ u1 = User.create!(
 
 u2 = User.create!(
   email: "admin2@example.com",
+  name: "admin2",
   password: "password",
   password_confirmation: "password",
   role: "locker_admin"

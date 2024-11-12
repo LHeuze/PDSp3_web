@@ -1,4 +1,5 @@
 // src/pages/ShowLockerPage.jsx
+
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Button, Card, CardContent, List, ListItem } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -11,7 +12,11 @@ function ShowLockerPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers/${lockerId}`)
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers/${lockerId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then(response => {
         setLocker(response.data);
       })

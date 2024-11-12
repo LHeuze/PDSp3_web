@@ -102,12 +102,16 @@ GEM
     erubi (1.13.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    google-id-token (1.4.2)
+      jwt (>= 1)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
     irb (1.14.1)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
+    jwt (2.9.3)
+      base64
     logger (1.6.1)
     loofah (2.23.1)
       crass (~> 1.0.2)
@@ -222,6 +226,8 @@ DEPENDENCIES
   bootsnap
   debug
   devise
+  google-id-token
+  jwt
   pg (~> 1.1)
   puma (>= 5.0)
   rack-cors

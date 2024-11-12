@@ -6,10 +6,17 @@ import axios from 'axios';
 
 function LockersPage() {
   const [lockers, setLockers] = useState([]);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers`)
+    const token = localStorage.getItem('authToken');
+
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers`, {
+      headers: {
+        'Authorization': token,
+      },
+    })
       .then(response => {
         setLockers(response.data);
       })
@@ -17,6 +24,7 @@ function LockersPage() {
         console.error("Error fetching lockers:", error);
       });
   }, []);
+
 
   const handleViewDetails = (lockerId) => {
     navigate(`/lockers/${lockerId}`);
@@ -39,6 +47,12 @@ function LockersPage() {
       <Typography variant="h4" sx={{ color: '#3d3b4e', fontWeight: 'bold', marginBottom: 4 }}>
         CASILLEROS
       </Typography>
+
+      {error && (
+        <Typography color="error" sx={{ marginBottom: 2 }}>
+          {error}
+        </Typography>
+      )}
 
       <Grid container spacing={3} justifyContent="center">
         {lockers.map((locker) => (

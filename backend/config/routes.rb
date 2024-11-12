@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :lockers, only: [:index, :show, :update]
+      post 'users/google_sign_in', to: 'users#google_sign_in'
     end
   end
 end

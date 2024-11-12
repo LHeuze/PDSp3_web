@@ -2,6 +2,7 @@
 module Api
   module V1
     class LockersController < ApplicationController
+      before_action :authenticate_request
       def index
         @lockers = Locker.includes(:owner).all
         render json: @lockers.as_json(
