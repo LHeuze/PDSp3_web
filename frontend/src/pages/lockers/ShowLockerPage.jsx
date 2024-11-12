@@ -58,7 +58,7 @@ function ShowLockerPage() {
             <LockOpen sx={{ fontSize: 50, color: 'limegreen', marginY: 2 }} />
           )}
           <Typography variant="body1" sx={{ marginTop: 2 }}>
-            Owner: {locker.owner.email}
+            Owner: {locker.owner_email}
           </Typography>
           <Typography variant="body1" sx={{ marginTop: 2 }}>
             Last Accessed: {new Date(locker.last_accessed).toLocaleString()}
@@ -82,7 +82,7 @@ function ShowLockerPage() {
             <Button
                 variant="contained"
                 sx={{ marginTop: 3, backgroundColor: 'limegreen', color: '#3d3b4e' }}
-                onClick={() => navigate(`/lockers/${lockerId}/edit`)} // Navigate to EditLockerPage
+                onClick={() => navigate(`/lockers/${lockerId}/edit`)}
             >
                 Edit Locker
             </Button>
@@ -90,7 +90,7 @@ function ShowLockerPage() {
             <Button
                 variant="contained"
                 sx={{ marginTop: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
-                onClick={() => navigate(-1)} // Navigate back to the previous page
+                onClick={() => navigate('/lockers')}
             >
                 Go Back
             </Button>

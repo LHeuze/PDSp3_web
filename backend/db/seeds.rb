@@ -15,28 +15,13 @@
 # db/seeds.rb
 
 # Create two users with different roles
-u1 = User.create!(
-  email: "admin@example.com",
-  name: "admin1",
-  password: "password",
-  password_confirmation: "password",
-  role: "locker_admin"
-)
-
-u2 = User.create!(
-  email: "admin2@example.com",
-  name: "admin2",
-  password: "password",
-  password_confirmation: "password",
-  role: "locker_admin"
-)
 
 # Create 3 lockers
 Locker.create!([
   {
     number: "Locker 1",
     password: ["fist", "peace", "rad", "fist"],
-    owner_id: u1.id,
+    owner_email: "lheuze@miuandes.cl",
     status: "locked",
     last_accessed: Time.now,
     model_version: "1.0",
@@ -46,7 +31,7 @@ Locker.create!([
   {
     number: "Locker 2",
     password: ["peace", "fist", "rad", "peace"],
-    owner_id: u1.id,
+    owner_email: "lheuze@miuandes.cl",
     status: "locked",
     last_accessed: Time.now,
     model_version: "1.0",
@@ -56,7 +41,7 @@ Locker.create!([
   {
     number: "Locker 3",
     password: ["rad", "fist", "peace", "rad"],
-    owner_id: u2.id,
+    owner_email: "lheuze@miuandes.cl",
     status: "locked",
     last_accessed: Time.now,
     model_version: "1.0",

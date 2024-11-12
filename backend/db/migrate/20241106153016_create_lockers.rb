@@ -3,7 +3,7 @@ class CreateLockers < ActiveRecord::Migration[7.1]
     create_table :lockers do |t|
       t.string :number
       t.text :password, array: true, default: []
-      t.references :owner, foreign_key: { to_table: :users }
+      t.string :owner_email, null: false
       t.string :status, default: "locked"
       t.datetime :last_accessed
       t.string :model_version

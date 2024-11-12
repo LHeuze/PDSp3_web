@@ -1,3 +1,3 @@
 class Locker < ApplicationRecord
-  belongs_to :owner, class_name: "User"
+  validates :owner_email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 end

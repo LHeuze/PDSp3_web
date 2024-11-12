@@ -53,7 +53,7 @@ function TopBar({ user, onLogout }) {
             >
               {/* Lockers link */}
               <MenuItem component={Link} to="/lockers" onClick={handleMenuClose}>
-                Lockers
+                CASILLEROS
               </MenuItem>
 
               {/* Logout option */}
@@ -65,7 +65,7 @@ function TopBar({ user, onLogout }) {
         ) : (
           <>
             <Typography variant="h6" sx={{ flexGrow: 1, color: 'limegreen' }}>
-              Welcome
+              Bienvenido
             </Typography>
 
             <Button
@@ -75,7 +75,7 @@ function TopBar({ user, onLogout }) {
               component={Link}
               to="/login"
             >
-              SIGN IN
+              LOG IN
             </Button>
           </>
         )}

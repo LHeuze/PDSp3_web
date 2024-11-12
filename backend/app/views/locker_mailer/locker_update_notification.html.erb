@@ -1,0 +1,14 @@
+<p>Hello,</p>
+
+<p>Your assigned locker (Number: <%= @locker.number %>) has been updated with a new password.</p>
+
+<p>New Password Gestures:</p>
+<ul>
+  <% @new_password.each do |gesture| %>
+    <li><%= gesture.capitalize %></li>
+  <% end %>
+</ul>
+
+<p>Please follow the instructions provided to access your locker. Contact support if you have any questions.</p>
+
+<p>Best regards,<br>Your Locker Management Team</p>

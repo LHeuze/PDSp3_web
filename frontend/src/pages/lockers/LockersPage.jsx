@@ -87,6 +87,13 @@ function LockersPage() {
           </Grid>
         ))}
       </Grid>
+      <Button
+                variant="contained"
+                sx={{ marginTop: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
+                onClick={() => navigate('/')}
+            >
+                Go Back
+      </Button>
     </Box>
   );
 }

@@ -8,12 +8,17 @@ function EditLockerPage() {
   const { lockerId } = useParams();
   const [locker, setLocker] = useState(null);
   const navigate = useNavigate();
+  const token = localStorage.getItem('authToken');
   
   // Define available gestures
   const gestures = ["fist", "five", "peace", "rad", "C", "thumb"];
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers/${lockerId}`)
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers/${lockerId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then(response => {
         setLocker(response.data);
       })
@@ -27,10 +32,13 @@ function EditLockerPage() {
     const payload = {
       password: locker.password,
       model_version: locker.model_version,
-      owner_id: locker.owner.id
+      owner_email: locker.owner_email
     };
-    console.log(payload)
-    axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers/${lockerId}`, payload)
+    axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers/${lockerId}`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then(() => {
         navigate(`/lockers/${lockerId}`);
       })
@@ -60,7 +68,7 @@ function EditLockerPage() {
         width: '100vw',
         padding: 4,
         textAlign: 'center',
-        paddingTop:'80px'
+        paddingTop: '80px'
       }}
     >
       <Typography variant="h4" sx={{ color: '#3d3b4e', fontWeight: 'bold', marginBottom: 4 }}>
@@ -70,21 +78,21 @@ function EditLockerPage() {
       {/* Editable Fields */}
       <TextField
         label="Owner Email"
-        value={locker.owner.email}
-        onChange={(e) => setLocker({ ...locker, owner: { ...locker.owner, email: e.target.value } })}
+        value={locker.owner_email || ""}
+        onChange={(e) => setLocker({ ...locker, owner_email: e.target.value })}
         fullWidth
         sx={{ marginBottom: 2 }}
       />
-      <TextField
+      {/* <TextField
         label="Model Version"
         value={locker.model_version}
         onChange={(e) => setLocker({ ...locker, model_version: e.target.value })}
         fullWidth
         sx={{ marginBottom: 2 }}
-      />
+    /> */}
 
       {/* Password Modification */}
-      <Typography variant="h6" sx={{ fontWeight: 'bold', marginTop: 2, color:'black' }}>
+      <Typography variant="h6" sx={{ fontWeight: 'bold', marginTop: 2, color: 'black' }}>
         Password Gestures
       </Typography>
       <Box sx={{ display: 'flex', gap: 2, marginTop: 2, justifyContent: 'center' }}>

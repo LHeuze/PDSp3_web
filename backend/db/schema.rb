@@ -17,7 +17,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_12_151922) do
   create_table "lockers", force: :cascade do |t|
     t.string "number"
     t.text "password", default: [], array: true
-    t.bigint "owner_id"
+    t.string "owner_email", null: false
     t.string "status", default: "locked"
     t.datetime "last_accessed"
     t.string "model_version"
@@ -26,7 +26,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_12_151922) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["number"], name: "index_lockers_on_number", unique: true
-    t.index ["owner_id"], name: "index_lockers_on_owner_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -43,5 +42,4 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_12_151922) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "lockers", "users", column: "owner_id"
 end
