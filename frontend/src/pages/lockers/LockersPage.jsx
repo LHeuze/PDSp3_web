@@ -92,7 +92,7 @@ function LockersPage() {
                 sx={{ marginTop: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
                 onClick={() => navigate('/')}
             >
-                Go Back
+              Volver atrás
       </Button>
     </Box>
   );

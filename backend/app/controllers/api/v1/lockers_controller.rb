@@ -24,7 +24,6 @@ module Api
         previous_password = @locker.password
 
         if @locker.update(locker_params)
-          # Send email if owner_email or password changed
           if @locker.owner_email != previous_owner_email || @locker.password != previous_password
             LockerMailer.locker_update_notification(@locker).deliver_now
           end

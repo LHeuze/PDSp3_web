@@ -72,12 +72,12 @@ function EditLockerPage() {
       }}
     >
       <Typography variant="h4" sx={{ color: '#3d3b4e', fontWeight: 'bold', marginBottom: 4 }}>
-        Edit Locker {locker.number}
+        Editar Casillero {locker.number}
       </Typography>
 
       {/* Editable Fields */}
       <TextField
-        label="Owner Email"
+        label="Email"
         value={locker.owner_email || ""}
         onChange={(e) => setLocker({ ...locker, owner_email: e.target.value })}
         fullWidth
@@ -93,12 +93,12 @@ function EditLockerPage() {
 
       {/* Password Modification */}
       <Typography variant="h6" sx={{ fontWeight: 'bold', marginTop: 2, color: 'black' }}>
-        Password Gestures
+        Gestos de la contraseña
       </Typography>
       <Box sx={{ display: 'flex', gap: 2, marginTop: 2, justifyContent: 'center' }}>
         {Array.from({ length: 4 }).map((_, index) => (
           <FormControl key={index} sx={{ minWidth: 80 }}>
-            <InputLabel>Gesture {index + 1}</InputLabel>
+            <InputLabel>Gesto {index + 1}</InputLabel>
             <Select
               value={locker.password[index] || ""}
               label={`Gesture ${index + 1}`}
@@ -119,7 +119,7 @@ function EditLockerPage() {
         sx={{ marginTop: 3, backgroundColor: 'limegreen', color: '#3d3b4e' }}
         onClick={handleSave}
       >
-        Save Changes
+        Guardar cambios
       </Button>
 
       <Button
@@ -127,7 +127,7 @@ function EditLockerPage() {
         sx={{ marginTop: 2, backgroundColor: 'gray', color: '#f9f5e8' }}
         onClick={() => navigate(-1)}
       >
-        Cancel
+        Cancelar
       </Button>
     </Box>
   );

@@ -79,7 +79,7 @@ Rails.application.configure do
     authentication:       'plain',
     enable_starttls: true  
   }
-
+  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
 end

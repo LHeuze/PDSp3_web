@@ -50,7 +50,7 @@ function ShowLockerPage() {
       <Card sx={{ maxWidth: 500, width: '100%', backgroundColor: '#3d3b4e', color: '#f9f5e8' }}>
         <CardContent sx={{ textAlign: 'center' }}>
           <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-            {locker.status === 'locked' ? "Locked" : "Unlocked"}
+            {locker.status === 'locked' ? "Cerrado" : "Abierto"}
           </Typography>
           {locker.status === 'locked' ? (
             <Lock sx={{ fontSize: 50, color: '#ffffff', marginY: 2 }} />
@@ -58,17 +58,17 @@ function ShowLockerPage() {
             <LockOpen sx={{ fontSize: 50, color: 'limegreen', marginY: 2 }} />
           )}
           <Typography variant="body1" sx={{ marginTop: 2 }}>
-            Owner: {locker.owner_email}
+            Dueño: {locker.owner_email}
           </Typography>
           <Typography variant="body1" sx={{ marginTop: 2 }}>
-            Last Accessed: {new Date(locker.last_accessed).toLocaleString()}
+            Ultimo acceso: {new Date(locker.last_accessed).toLocaleString()}
           </Typography>
           <Typography variant="body1" sx={{ marginTop: 2 }}>
-            Model Version: {locker.model_version}
+            Modelo: {locker.model_version}
           </Typography>
           
           <Typography variant="body1" sx={{ marginTop: 2, fontWeight: 'bold' }}>
-            Password:
+            Contraseña:
           </Typography>
           <List sx={{ display: 'flex', justifyContent: 'center', padding: 0 }}>
             {locker.password.map((gesture, index) => (
@@ -84,7 +84,7 @@ function ShowLockerPage() {
                 sx={{ marginTop: 3, backgroundColor: 'limegreen', color: '#3d3b4e' }}
                 onClick={() => navigate(`/lockers/${lockerId}/edit`)}
             >
-                Edit Locker
+                Editar Casillero
             </Button>
 
             <Button
@@ -92,7 +92,7 @@ function ShowLockerPage() {
                 sx={{ marginTop: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
                 onClick={() => navigate('/lockers')}
             >
-                Go Back
+                Volver atrás
             </Button>
           </Box>
         </CardContent>
