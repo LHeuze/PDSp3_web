@@ -4,7 +4,7 @@ class MqttService
   def self.publish_locker_update(locker)
     # Set MQTTX public broker details
     host = 'broker.emqx.io'
-    port = 1883  # or 8883 if you want to use SSL/TLS
+    port = 8883  # or 8883 if you want to use SSL/TLS
 
     # Establish MQTT connection without authentication
     client = MQTT::Client.connect(
