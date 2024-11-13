@@ -14,4 +14,5 @@ Rails.application.routes.draw do
       post 'users/google_sign_in', to: 'users#google_sign_in'
     end
   end
+  get '*path', to: 'static#index', constraints: ->(req) { !req.xhr? && req.format.html? }
 end
