@@ -1,12 +1,20 @@
-<p>Hola,</p>
-
 <p>Tu casillero (Number: <%= @locker.number %>) ha sido modificado y tiene nueva contraseña.</p>
+
+<h2>Instrucciones</h2>
+<p>1. Para abrir el casillero, acerca la mano al sensor en la caja para iniciar la interacción.</p>
+<p>2. Luego selecciona el casillero que quieres abrir ({1, 2, 3}) usando el gesto correspondiente:</p>
+
+<% if @locker_number_gesture %>
+  <p>Gesto para seleccionar el casillero <%= @locker.number %>:</p>
+  <%= image_tag attachments.inline["locker_select_#{@locker_number_gesture}.jpg"].url, style: "width: 100px; height: 100px; vertical-align: middle;" %>
+<% end %>
+
+<p>3. Finalmente, realiza los gestos en el orden que se muestra en la contraseña de este mail:</p>
 
 <p>New Password Gestures:</p>
 <ul>
   <% @new_password.each do |gesture| %>
-    <%= image_tag attachments.inline["#{gesture.downcase}.jpg"].url, style: "width: 100px; height: 100px; vertical-align: middle;" %>
     <li><%= gesture.capitalize %></li>
+    <%= image_tag attachments.inline["#{gesture.downcase}.jpg"].url, style: "width: 100px; height: 100px; vertical-align: middle;" %>
   <% end %>
 </ul>
-<p>Para abrir el casillero acerca la mano al sensor en la caja y luego realiza los gestos en el orden que se muestra en este mail.</p>

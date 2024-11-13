@@ -124,6 +124,7 @@ GEM
     marcel (1.0.4)
     mini_mime (1.1.5)
     minitest (5.25.1)
+    mqtt (0.6.0)
     msgpack (1.7.3)
     mutex_m (0.2.0)
     net-imap (0.5.0)
@@ -228,6 +229,7 @@ DEPENDENCIES
   devise
   google-id-token
   jwt
+  mqtt
   pg
   puma (>= 5.0)
   rack-cors

@@ -17,7 +17,7 @@
 # Create two users with different roles
 
 # Create 3 lockers
-Locker.find_or_create_by!(number: "Locker 1") do |locker|
+Locker.find_or_create_by!(number: "1") do |locker|
   locker.password = ["fist", "peace", "rad", "fist"]
   locker.owner_email = "lheuze@miuandes.cl"
   locker.status = "locked"
@@ -27,7 +27,7 @@ Locker.find_or_create_by!(number: "Locker 1") do |locker|
   locker.synced = true
 end
 
-Locker.find_or_create_by!(number: "Locker 2") do |locker|
+Locker.find_or_create_by!(number: "2") do |locker|
   locker.password = ["peace", "fist", "rad", "peace"]
   locker.owner_email = "lheuze@miuandes.cl"
   locker.status = "locked"
@@ -37,7 +37,7 @@ Locker.find_or_create_by!(number: "Locker 2") do |locker|
   locker.synced = true
 end
 
-Locker.find_or_create_by!(number: "Locker 3") do |locker|
+Locker.find_or_create_by!(number: "3") do |locker|
   locker.password = ["rad", "fist", "peace", "rad"]
   locker.owner_email = "lheuze@miuandes.cl"
   locker.status = "locked"
