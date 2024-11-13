@@ -17,35 +17,33 @@
 # Create two users with different roles
 
 # Create 3 lockers
-Locker.create!([
-  {
-    number: "Locker 1",
-    password: ["fist", "peace", "rad", "fist"],
-    owner_email: "lheuze@miuandes.cl",
-    status: "locked",
-    last_accessed: Time.now,
-    model_version: "1.0",
-    access_count: 0,
-    synced: true
-  },
-  {
-    number: "Locker 2",
-    password: ["peace", "fist", "rad", "peace"],
-    owner_email: "lheuze@miuandes.cl",
-    status: "locked",
-    last_accessed: Time.now,
-    model_version: "1.0",
-    access_count: 0,
-    synced: true
-  },
-  {
-    number: "Locker 3",
-    password: ["rad", "fist", "peace", "rad"],
-    owner_email: "lheuze@miuandes.cl",
-    status: "locked",
-    last_accessed: Time.now,
-    model_version: "1.0",
-    access_count: 0,
-    synced: true
-  }
-])
+Locker.find_or_create_by!(number: "Locker 1") do |locker|
+  locker.password = ["fist", "peace", "rad", "fist"]
+  locker.owner_email = "lheuze@miuandes.cl"
+  locker.status = "locked"
+  locker.last_accessed = Time.now
+  locker.model_version = "1.0"
+  locker.access_count = 0
+  locker.synced = true
+end
+
+Locker.find_or_create_by!(number: "Locker 2") do |locker|
+  locker.password = ["peace", "fist", "rad", "peace"]
+  locker.owner_email = "lheuze@miuandes.cl"
+  locker.status = "locked"
+  locker.last_accessed = Time.now
+  locker.model_version = "1.0"
+  locker.access_count = 0
+  locker.synced = true
+end
+
+Locker.find_or_create_by!(number: "Locker 3") do |locker|
+  locker.password = ["rad", "fist", "peace", "rad"]
+  locker.owner_email = "lheuze@miuandes.cl"
+  locker.status = "locked"
+  locker.last_accessed = Time.now
+  locker.model_version = "1.0"
+  locker.access_count = 0
+  locker.synced = true
+end
+
