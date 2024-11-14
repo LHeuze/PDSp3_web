@@ -81,6 +81,13 @@ function ShowLockerPage() {
               </ListItem>
             ))}
           </List>
+          <Button
+              variant="contained"
+              sx={{ marginTop: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
+              onClick={() => navigate(`/lockers/${lockerId}/log`)}
+            >
+              Ver Historial de Aperturas y Cierres
+            </Button>
 
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5, marginTop: 2 }}>
             <Button
@@ -99,13 +106,7 @@ function ShowLockerPage() {
                 Volver atrás
             </Button>
 
-            <Button
-              variant="contained"
-              sx={{ marginTop: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
-              onClick={() => navigate(`/lockers/${lockerId}/log`)}
-            >
-              Ver Historial de Aperturas y Cierres
-            </Button>
+            
           </Box>
         </CardContent>
       </Card>

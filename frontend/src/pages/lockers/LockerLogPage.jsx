@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, List, ListItem, ListItemText } from '@mui/material';
+import { Box, Typography, List, ListItem, ListItemText, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function LockerLogPage() {
   const { lockerId } = useParams();
   const [logEntries, setLogEntries] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers/${lockerId}/events`, {
@@ -59,6 +60,13 @@ function LockerLogPage() {
           </ListItem>
         ))}
       </List>
+      <Button
+                variant="contained"
+                sx={{ marginTop: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
+                onClick={() => navigate(`/lockers/${lockerId}`)}
+            >
+                Volver atrás
+      </Button>
     </Box>
   );
 }

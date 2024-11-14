@@ -26,31 +26,36 @@ class MqttService
 
   def self.subscribe_to_locker_open_events
     host = 'broker.emqx.io'
-    port = 1883  # Use 8883 if you want SSL/TLS
+    port = 8883  # SSL/TLS enabled port
 
     client = MQTT::Client.connect(
       host: host,
       port: port,
-      ssl: (port == 8883)
+      ssl: true
     )
 
-    # Subscribe to a topic (assuming all open events are published on this topic)
     topic = "lockers/status"
-
     client.subscribe(topic)
 
     # Listen for messages
     client.get do |received_topic, message|
       data = JSON.parse(message)
 
-      # Ensure the message action is locker opened
-      if data["action"] == "locker_opened"
-        locker_number = data["number"]
-        locker = Locker.find_by(number: locker_number)
+      # Use the new format with locker_id and status
+      locker_id = data["locker_id"]
+      status = data["status"]
+
+      if locker_id && status
+        locker = Locker.find_by(id: locker_id)
 
         if locker
-          send_email_to_owner(locker.owner_email, "Your locker has been opened.")
+          event_type = status == "opened" ? "opened" : "closed"
+          LockerEvent.create!(locker: locker, event_type: event_type, event_timestamp: Time.current)
+          action_message = status == "opened" ? "Su casillero ha sido abierto." : "Su casillero ha sido cerrado."
+          send_email_to_owner(locker.owner_email, action_message)
         end
+      else
+        Rails.logger.error "Invalid message format received: #{message}"
       end
     end
   end
