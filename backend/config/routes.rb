@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   # root "posts#index"
   namespace :api do
     namespace :v1 do
-      resources :lockers, only: [:index, :show, :update]
+      resources :lockers, only: [:index, :show, :update] do
+        get 'events', on: :member
+      end
       post 'users/google_sign_in', to: 'users#google_sign_in'
     end
   end

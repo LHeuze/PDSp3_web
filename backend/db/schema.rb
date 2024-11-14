@@ -10,16 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_12_151922) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_14_012814) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "locker_events", force: :cascade do |t|
+    t.integer "locker_id", null: false
+    t.string "event_type", null: false
+    t.datetime "event_timestamp", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["locker_id"], name: "index_locker_events_on_locker_id"
+  end
 
   create_table "lockers", force: :cascade do |t|
     t.string "number"
     t.text "password", default: [], array: true
     t.string "owner_email", null: false
     t.string "status", default: "locked"
-    t.datetime "last_accessed"
+    t.datetime "last_opened"
+    t.datetime "last_closed"
     t.string "model_version"
     t.integer "access_count", default: 0
     t.boolean "synced", default: true
@@ -42,4 +52,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_12_151922) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "locker_events", "lockers"
 end

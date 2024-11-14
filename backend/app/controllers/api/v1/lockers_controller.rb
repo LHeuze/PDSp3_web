@@ -2,19 +2,18 @@ module Api
   module V1
     class LockersController < ApplicationController
       before_action :authenticate_request
+      before_action :set_locker, only: [:events]
       
       def index
         @lockers = Locker.order(:number)
         render json: @lockers.as_json(
-          only: [:id, :number, :password, :status, :last_accessed, :model_version, :owner_email]
+          only: [:id, :number, :password, :status, :last_opened, :last_closed, :model_version, :owner_email]
         )
       end
 
       def show
-        @locker = Locker.find(params[:id])
-        render json: @locker.as_json(
-          only: [:id, :number, :password, :status, :last_accessed, :model_version, :access_count, :owner_email]
-        )
+        locker = Locker.find(params[:id])
+        render json: locker.as_json(methods: [:formatted_last_opened, :formatted_last_closed])
       end
 
       def update
@@ -33,10 +32,20 @@ module Api
         end
       end
 
+      def events
+        events = @locker.locker_events.order(event_timestamp: :desc)
+
+        render json: events, status: :ok
+      end
+
       private
 
       def locker_params
         params.require(:locker).permit(:model_version, :owner_email, password: [])
+      end
+
+      def set_locker
+        @locker = Locker.find(params[:id])
       end
     end
   end

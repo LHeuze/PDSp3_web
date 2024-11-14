@@ -17,33 +17,67 @@
 # Create two users with different roles
 
 # Create 3 lockers
-Locker.find_or_create_by!(number: "1") do |locker|
+locker1 = Locker.find_or_create_by!(number: "1") do |locker|
   locker.password = ["fist", "peace", "rad", "fist"]
   locker.owner_email = "lheuze@miuandes.cl"
   locker.status = "locked"
-  locker.last_accessed = Time.now
+  locker.last_opened = Time.now
+  locker.last_closed = Time.now
   locker.model_version = "1.0"
   locker.access_count = 0
   locker.synced = true
 end
 
-Locker.find_or_create_by!(number: "2") do |locker|
+locker2 = Locker.find_or_create_by!(number: "2") do |locker|
   locker.password = ["peace", "fist", "rad", "peace"]
   locker.owner_email = "lheuze@miuandes.cl"
   locker.status = "locked"
-  locker.last_accessed = Time.now
+  locker.last_opened = Time.now
+  locker.last_closed = Time.now
   locker.model_version = "1.0"
   locker.access_count = 0
   locker.synced = true
 end
 
-Locker.find_or_create_by!(number: "3") do |locker|
+locker3 = Locker.find_or_create_by!(number: "3") do |locker|
   locker.password = ["rad", "fist", "peace", "rad"]
   locker.owner_email = "lheuze@miuandes.cl"
   locker.status = "locked"
-  locker.last_accessed = Time.now
+  locker.last_opened = Time.now
+  locker.last_closed = Time.now
   locker.model_version = "1.0"
   locker.access_count = 0
   locker.synced = true
 end
 
+# Helper method to create opening and closing events
+def seed_locker_events(locker)
+  # Create an opening event 6 hours ago
+  locker.locker_events.create!(
+    event_type: "opened",
+    event_timestamp: 6.hours.ago
+  )
+
+  # Create a closing event 5 hours ago
+  locker.locker_events.create!(
+    event_type: "closed",
+    event_timestamp: 5.hours.ago
+  )
+
+  # Create another opening event 2 hours ago
+  locker.locker_events.create!(
+    event_type: "opened",
+    event_timestamp: 2.hours.ago
+  )
+
+  # Create another closing event 1 hour ago
+  locker.locker_events.create!(
+    event_type: "closed",
+    event_timestamp: 1.hour.ago
+  )
+end
+
+# Seed events for each locker
+seed_locker_events(locker1)
+seed_locker_events(locker2)
+seed_locker_events(locker3)

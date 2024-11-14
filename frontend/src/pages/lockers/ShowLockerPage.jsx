@@ -61,8 +61,12 @@ function ShowLockerPage() {
             Dueño: {locker.owner_email}
           </Typography>
           <Typography variant="body1" sx={{ marginTop: 2 }}>
-            Ultimo acceso: {new Date(locker.last_accessed).toLocaleString()}
+            Ultima apertura: {new Date(locker.last_opened).toLocaleString()}
           </Typography>
+          <Typography variant="body1" sx={{ marginTop: 2 }}>
+            Ultimo cierre: {new Date(locker.last_closed).toLocaleString()}
+          </Typography>
+
           <Typography variant="body1" sx={{ marginTop: 2 }}>
             Modelo: {locker.model_version}
           </Typography>
@@ -93,6 +97,14 @@ function ShowLockerPage() {
                 onClick={() => navigate('/lockers')}
             >
                 Volver atrás
+            </Button>
+
+            <Button
+              variant="contained"
+              sx={{ marginTop: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
+              onClick={() => navigate(`/lockers/${lockerId}/log`)}
+            >
+              Ver Historial de Aperturas y Cierres
             </Button>
           </Box>
         </CardContent>

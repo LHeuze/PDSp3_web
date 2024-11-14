@@ -60,7 +60,7 @@ function LockersPage() {
             <Card sx={{ backgroundColor: '#3d3b4e', color: '#f9f5e8', padding: 3 }}>
               <CardContent sx={{ textAlign: 'center' }}>
                 <Typography variant="h5" sx={{ fontWeight: 'bold', fontSize: '1.25rem' }}>
-                  {locker.number}
+                  Casillero {locker.number}
                 </Typography>
                 {locker.status === 'locked' ? (
                   <Lock sx={{ fontSize: 50, color: '#ffffff', marginY: 2 }} />

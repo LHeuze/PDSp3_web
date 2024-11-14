@@ -5,7 +5,8 @@ class CreateLockers < ActiveRecord::Migration[7.1]
       t.text :password, array: true, default: []
       t.string :owner_email, null: false
       t.string :status, default: "locked"
-      t.datetime :last_accessed
+      t.datetime :last_opened
+      t.datetime :last_closed
       t.string :model_version
       t.integer :access_count, default: 0
       t.boolean :synced, default: true

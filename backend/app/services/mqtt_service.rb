@@ -14,7 +14,7 @@ class MqttService
     )
 
     # Define the topic and message
-    topic = "lockers/#{locker.number}/update"
+    topic = "lockers/update"
     message = { number: locker.number, new_password: locker.password }.to_json
 
     # Publish the message
@@ -35,7 +35,7 @@ class MqttService
     )
 
     # Subscribe to a topic (assuming all open events are published on this topic)
-    topic = "lockers/+/opened"
+    topic = "lockers/status"
 
     client.subscribe(topic)
 

@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage';
 import LockersPage from './pages/lockers/LockersPage';
 import ShowLockerPage from './pages/lockers/ShowLockerPage';
 import EditLockerPage from './pages/lockers/EditLockerPage';
+import LockerLogPage from './pages/lockers/LockerLogPage';
 import LoginPage from './pages/login/LoginPage';
 import TopBar from './components/TopBar';
 
@@ -25,39 +26,29 @@ function App() {
     localStorage.removeItem('user');
   };
 
+  // Protected Route component
+  const ProtectedRoute = ({ element }) => {
+    return user ? element : <Navigate to="/login" replace />;
+  };
+
   return (
     <Router>
       <TopBar user={user} onLogout={handleLogout} /> {/* Pass user and onLogout to TopBar */}
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        
-        {/* Login page: redirects to home if already logged in */}
+        {/* Redirect to login if not authenticated */}
         <Route
           path="/login"
           element={user ? <Navigate to="/" replace /> : <LoginPage setUser={setUser} />}
         />
         
         {/* Protected routes that require a logged-in user */}
-        <Route
-          path="/lockers"
-          element={
-            user ? <LockersPage /> : <Navigate to="/login" replace />
-          }
-        />
-        <Route
-          path="/lockers/:lockerId"
-          element={
-            user ? <ShowLockerPage /> : <Navigate to="/login" replace />
-          }
-        />
-        <Route
-          path="/lockers/:lockerId/edit"
-          element={
-            user ? <EditLockerPage /> : <Navigate to="/login" replace />
-          }
-        />
-        
-        {/* Catch-all route: redirects to home or login based on authentication */}
+        <Route path="/" element={<ProtectedRoute element={<HomePage />} />} />
+        <Route path="/lockers" element={<ProtectedRoute element={<LockersPage />} />} />
+        <Route path="/lockers/:lockerId" element={<ProtectedRoute element={<ShowLockerPage />} />} />
+        <Route path="/lockers/:lockerId/edit" element={<ProtectedRoute element={<EditLockerPage />} />} />
+        <Route path="/lockers/:lockerId/log" element={<LockerLogPage />} />
+
+        {/* Catch-all route */}
         <Route path="*" element={<Navigate to={user ? "/" : "/login"} replace />} />
       </Routes>
     </Router>
