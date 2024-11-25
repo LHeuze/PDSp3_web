@@ -10,9 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_14_012814) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_25_211320) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "locker_administrators", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "base_topic"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "locker_events", force: :cascade do |t|
     t.integer "locker_id", null: false
@@ -35,6 +42,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_14_012814) do
     t.boolean "synced", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "locker_administrator_id"
+    t.index ["locker_administrator_id"], name: "index_lockers_on_locker_administrator_id"
     t.index ["number"], name: "index_lockers_on_number", unique: true
   end
 
@@ -53,4 +62,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_14_012814) do
   end
 
   add_foreign_key "locker_events", "lockers"
+  add_foreign_key "lockers", "locker_administrators"
 end
