@@ -3,7 +3,7 @@ class Locker < ApplicationRecord
   after_update :notify_password_change, if: :saved_change_to_password?
 
   has_many :locker_events, dependent: :destroy
-  belongs_to :locker_administrator, optional: true
+  belongs_to :locker_administrator
 
   def formatted_last_opened
     last_opened&.iso8601

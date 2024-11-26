@@ -2,14 +2,17 @@
 
 # Create a Locker Administrator
 locker_admin = LockerAdministrator.find_or_create_by!(name: "Locker admin 1") do |admin|
-  admin.base_topic = "lockers/admin/default"
+  admin.user = User.find_by(email: "lheuze@miuandes.cl")
+  admin.name = "locker admin de Lucas"
+  admin.base_topic = "lockers/1/"
+  admin.amount_of_lockers = 3
 end
 
 # Create 3 lockers and assign them to the Locker Administrator
 locker1 = Locker.find_or_create_by!(number: "1") do |locker|
+  locker.name = "locker 1"
   locker.password = ["fist", "peace", "rad", "fist"]
   locker.owner_email = "lheuze@miuandes.cl"
-  locker.status = "locked"
   locker.last_opened = Time.now
   locker.last_closed = Time.now
   locker.model_version = "1.0"
@@ -19,9 +22,9 @@ locker1 = Locker.find_or_create_by!(number: "1") do |locker|
 end
 
 locker2 = Locker.find_or_create_by!(number: "2") do |locker|
+  locker.name = "locker 2"
   locker.password = ["peace", "fist", "rad", "peace"]
   locker.owner_email = "lheuze@miuandes.cl"
-  locker.status = "locked"
   locker.last_opened = Time.now
   locker.last_closed = Time.now
   locker.model_version = "1.0"
@@ -31,9 +34,9 @@ locker2 = Locker.find_or_create_by!(number: "2") do |locker|
 end
 
 locker3 = Locker.find_or_create_by!(number: "3") do |locker|
+  locker.name = "locker 3"
   locker.password = ["rad", "fist", "peace", "rad"]
   locker.owner_email = "lheuze@miuandes.cl"
-  locker.status = "locked"
   locker.last_opened = Time.now
   locker.last_closed = Time.now
   locker.model_version = "1.0"

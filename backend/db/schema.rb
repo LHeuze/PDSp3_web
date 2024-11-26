@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_25_211320) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_26_191327) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,6 +19,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_25_211320) do
     t.string "base_topic"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.integer "amount_of_lockers"
+    t.string "status", default: "not conected"
+    t.index ["user_id"], name: "index_locker_administrators_on_user_id"
   end
 
   create_table "locker_events", force: :cascade do |t|
@@ -34,7 +38,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_25_211320) do
     t.string "number"
     t.text "password", default: [], array: true
     t.string "owner_email", null: false
-    t.string "status", default: "locked"
     t.datetime "last_opened"
     t.datetime "last_closed"
     t.string "model_version"
@@ -43,8 +46,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_25_211320) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "locker_administrator_id"
+    t.string "name"
     t.index ["locker_administrator_id"], name: "index_lockers_on_locker_administrator_id"
     t.index ["number"], name: "index_lockers_on_number", unique: true
+  end
+
+  create_table "models", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "gestures", default: [], array: true
+    t.string "file"
+    t.bigint "locker_administrator_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["locker_administrator_id"], name: "index_models_on_locker_administrator_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -61,6 +75,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_25_211320) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "locker_administrators", "users"
   add_foreign_key "locker_events", "lockers"
   add_foreign_key "lockers", "locker_administrators"
+  add_foreign_key "models", "locker_administrators"
 end

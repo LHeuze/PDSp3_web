@@ -13,6 +13,9 @@ Rails.application.routes.draw do
       resources :lockers, only: [:index, :show, :update] do
         get 'events', on: :member
       end
+      resources :locker_administrators, only: [:index, :update] do
+        get 'lockers', on: :member
+      end
       post 'users/google_sign_in', to: 'users#google_sign_in'
     end
   end

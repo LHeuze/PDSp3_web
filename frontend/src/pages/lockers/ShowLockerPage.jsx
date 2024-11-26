@@ -1,10 +1,7 @@
-// src/pages/ShowLockerPage.jsx
-
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Button, Card, CardContent, List, ListItem } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Lock, LockOpen } from '@mui/icons-material';
 
 function ShowLockerPage() {
   const { lockerId } = useParams();
@@ -13,11 +10,12 @@ function ShowLockerPage() {
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers/${lockerId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    axios
+      .get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers/${lockerId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(response => {
         setLocker(response.data);
       })
@@ -41,22 +39,17 @@ function ShowLockerPage() {
         width: '100vw',
         padding: 4,
         textAlign: 'center',
-        paddingTop:'80px'
+        paddingTop: '80px',
       }}
     >
       <Typography variant="h4" sx={{ color: '#3d3b4e', fontWeight: 'bold', marginBottom: 4 }}>
-        {locker.number}
+        Casillero {locker.number}
       </Typography>
       <Card sx={{ maxWidth: 500, width: '100%', backgroundColor: '#3d3b4e', color: '#f9f5e8' }}>
         <CardContent sx={{ textAlign: 'center' }}>
-          <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-            {locker.status === 'locked' ? "Cerrado" : "Abierto"}
+          <Typography variant="h5" sx={{ marginTop: 2 }}>
+            {locker.name}
           </Typography>
-          {locker.status === 'locked' ? (
-            <Lock sx={{ fontSize: 50, color: '#ffffff', marginY: 2 }} />
-          ) : (
-            <LockOpen sx={{ fontSize: 50, color: 'limegreen', marginY: 2 }} />
-          )}
           <Typography variant="body1" sx={{ marginTop: 2 }}>
             Dueño: {locker.owner_email}
           </Typography>
@@ -66,11 +59,6 @@ function ShowLockerPage() {
           <Typography variant="body1" sx={{ marginTop: 2 }}>
             Ultimo cierre: {new Date(locker.last_closed).toLocaleString()}
           </Typography>
-
-          <Typography variant="body1" sx={{ marginTop: 2 }}>
-            Modelo: {locker.model_version}
-          </Typography>
-          
           <Typography variant="body1" sx={{ marginTop: 2, fontWeight: 'bold' }}>
             Contraseña:
           </Typography>
@@ -82,34 +70,28 @@ function ShowLockerPage() {
             ))}
           </List>
           <Button
-              variant="contained"
-              sx={{ marginTop: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
-              onClick={() => navigate(`/lockers/${lockerId}/log`)}
-            >
-              Ver Historial de Aperturas y Cierres
-            </Button>
-
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5, marginTop: 2 }}>
-            <Button
-                variant="contained"
-                sx={{ marginTop: 3, backgroundColor: 'limegreen', color: '#3d3b4e' }}
-                onClick={() => navigate(`/lockers/${lockerId}/edit`)}
-            >
-                Editar Casillero
-            </Button>
-
-            <Button
-                variant="contained"
-                sx={{ marginTop: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
-                onClick={() => navigate('/lockers')}
-            >
-                Volver atrás
-            </Button>
-
-            
-          </Box>
+            variant="contained"
+            sx={{ marginTop: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
+            onClick={() => navigate(`/lockers/${lockerId}/log`)}
+          >
+            Ver Historial de Aperturas y Cierres
+          </Button>
+          <Button
+            variant="contained"
+            sx={{ marginTop: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
+            onClick={() => navigate(`/lockers/${lockerId}/edit`)}
+          >
+            Editar Casillero
+          </Button>
         </CardContent>
       </Card>
+      <Button
+        variant="contained"
+        sx={{ marginTop: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
+        onClick={() => navigate(`/locker_administrators/${locker.locker_administrator_id}/lockers`)}
+      >
+        Volver atrás
+      </Button>
     </Box>
   );
 }

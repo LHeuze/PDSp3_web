@@ -8,7 +8,7 @@ function HomePage() {
   const navigate = useNavigate();
 
   const handleNavigateToLockers = () => {
-    navigate('/lockers');
+    navigate('/locker_administrators');
   };
   return (
     <Box 
@@ -33,52 +33,15 @@ function HomePage() {
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen', height: '100%' }}>
               <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6">AGREGAR O AJUSTAR CASILLERO</Typography>
+                <Typography variant="h6"></Typography>
                 <Button
                   variant="contained"
                   fullWidth
                   sx={{ mt: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
                   onClick={handleNavigateToLockers}  // Redirect to LockersPage
                 >
-                  ABRIR
+                  Ver administradores de casilleros
                 </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen', height: '100%' }}>
-              <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6">DASHBOARD</Typography>
-                <Button variant="contained" fullWidth sx={{ mt: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}>
-                  ABRIR
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen', height: '100%' }}>
-              <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6">AGREGAR CONTROLADOR</Typography>
-                <Button variant="contained" fullWidth sx={{ mt: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}>
-                  ABRIR
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen', height: '100%' }}>
-              <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6">ESTADO DEL SISTEMA</Typography>
-                <Typography variant="body2" sx={{ color: 'red', fontWeight: 'bold', mt: 1 }}>
-                  DESCONECTADO
-                </Typography>
-                <Typography variant="h6" sx={{ mt: 2 }}>
-                  ÚLTIMA SINCRONIZACIÓN
-                </Typography>
-                <Typography variant="body2" sx={{ mt: 1 }}>01/10/2024</Typography>
               </CardContent>
             </Card>
           </Grid>

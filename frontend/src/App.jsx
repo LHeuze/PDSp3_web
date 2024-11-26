@@ -5,6 +5,7 @@ import LockersPage from './pages/lockers/LockersPage';
 import ShowLockerPage from './pages/lockers/ShowLockerPage';
 import EditLockerPage from './pages/lockers/EditLockerPage';
 import LockerLogPage from './pages/lockers/LockerLogPage';
+import LockerAdminPage from './pages/locker_adminstrators/LockerAdminPage';
 import LoginPage from './pages/login/LoginPage';
 import TopBar from './components/TopBar';
 
@@ -43,8 +44,9 @@ function App() {
         
         {/* Protected routes that require a logged-in user */}
         <Route path="/" element={<ProtectedRoute element={<HomePage />} />} />
-        <Route path="/lockers" element={<ProtectedRoute element={<LockersPage />} />} />
+        <Route path="/locker_administrators/:adminId/lockers" element={<ProtectedRoute element={<LockersPage />} />} />
         <Route path="/lockers/:lockerId" element={<ProtectedRoute element={<ShowLockerPage />} />} />
+        <Route path="/locker_administrators" element={<ProtectedRoute element={<LockerAdminPage />} />} />
         <Route path="/lockers/:lockerId/edit" element={<ProtectedRoute element={<EditLockerPage />} />} />
         <Route path="/lockers/:lockerId/log" element={<LockerLogPage />} />
 

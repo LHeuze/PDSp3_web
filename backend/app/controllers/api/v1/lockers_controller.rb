@@ -7,7 +7,7 @@ module Api
       def index
         @lockers = Locker.order(:number)
         render json: @lockers.as_json(
-          only: [:id, :number, :password, :status, :last_opened, :last_closed, :model_version, :owner_email]
+          only: [:id, :name, :number, :password, :last_opened, :last_closed, :model_version, :owner_email]
         )
       end
 
@@ -41,7 +41,7 @@ module Api
       private
 
       def locker_params
-        params.require(:locker).permit(:model_version, :owner_email, password: [])
+        params.require(:locker).permit(:name, :model_version, :owner_email, password: [])
       end
 
       def set_locker
