@@ -1,17 +1,13 @@
-// src/pages/HomePage.jsx
+// src/pages/SuperuserDashboard.jsx
 import React from 'react';
 import { Box, Typography, Grid, Card, CardContent, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-function HomePage() {
-
+function SuperuserDashboard() {
   const navigate = useNavigate();
 
-  const handleNavigateToLockers = () => {
-    navigate('/locker_administrators');
-  };
   return (
-    <Box 
+    <Box
       sx={{
         position: 'fixed',
         top: 64, // Adjust this value to match the height of your top bar
@@ -23,39 +19,52 @@ function HomePage() {
         px: { xs: 2, sm: 4, md: 6 }
       }}
     >
-      {/* Main Menu */}
       <Box sx={{ textAlign: 'center', mt: 4 }}>
         <Typography variant="h4" sx={{ color: '#3d3b4e', fontWeight: 'bold', mb: 4 }}>
-          MENÚ PRINCIPAL
+          SUPERUSER DASHBOARD
         </Typography>
-        <Button
-          variant="contained"
-          color="success"
-          sx={{ fontSize: '1rem', fontWeight: 'bold', padding: '10px 20px' }}
-          onClick={() => navigate('/superuser/dashboard')}
-        >
-          Superuser Dashboard
-        </Button>
         <Grid container spacing={3} justifyContent="center">
-          <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Grid item xs={12} sm={6} md={4}>
             <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen', height: '100%' }}>
               <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6"></Typography>
+                <Typography variant="h6">Manage Users</Typography>
                 <Button
                   variant="contained"
                   fullWidth
                   sx={{ mt: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
-                  onClick={handleNavigateToLockers}  // Redirect to LockersPage
+                  onClick={() => navigate('/superuser/users')}
                 >
-                  Ver administradores de casilleros
+                  Go to Users
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen', height: '100%' }}>
+              <CardContent sx={{ textAlign: 'center' }}>
+                <Typography variant="h6">Manage Models</Typography>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  sx={{ mt: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
+                  onClick={() => navigate('/superuser/models')}
+                >
+                  Go to Models
                 </Button>
               </CardContent>
             </Card>
           </Grid>
         </Grid>
+        <Button
+          variant="contained"
+          sx={{ mt: 4, backgroundColor: '#f44336', color: '#fff', fontWeight: 'bold' }}
+          onClick={() => navigate('/')}
+        >
+          Go Back to Home
+        </Button>
       </Box>
     </Box>
   );
 }
 
-export default HomePage;
+export default SuperuserDashboard;

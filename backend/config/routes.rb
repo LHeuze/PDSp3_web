@@ -10,6 +10,11 @@ Rails.application.routes.draw do
   # root "posts#index"
   namespace :api do
     namespace :v1 do
+      namespace :superuser do
+        get 'dashboard', to: 'dashboard#index'
+        resources :models
+        resources :users
+      end
       resources :lockers, only: [:index, :show, :update] do
         get 'events', on: :member
       end
