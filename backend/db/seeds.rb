@@ -1,5 +1,10 @@
 # db/seeds.rb
-
+User.find_or_create_by!(email: "lheuze@miuandes.cl") do |user|
+  user.name = "LUCAS HEUZE ARAYA"
+  user.password = "password" # Replace with a strong password
+  user.password_confirmation = "password"
+  user.role = "superuser"
+end
 # Create a Locker Administrator
 locker_admin = LockerAdministrator.find_or_create_by!(name: "Locker admin 1") do |admin|
   admin.user = User.find_by(email: "lheuze@miuandes.cl")
@@ -15,9 +20,7 @@ locker1 = Locker.find_or_create_by!(number: "1") do |locker|
   locker.owner_email = "lheuze@miuandes.cl"
   locker.last_opened = Time.now
   locker.last_closed = Time.now
-  locker.model_version = "1.0"
   locker.access_count = 0
-  locker.synced = true
   locker.locker_administrator = locker_admin
 end
 
@@ -27,9 +30,7 @@ locker2 = Locker.find_or_create_by!(number: "2") do |locker|
   locker.owner_email = "lheuze@miuandes.cl"
   locker.last_opened = Time.now
   locker.last_closed = Time.now
-  locker.model_version = "1.0"
   locker.access_count = 0
-  locker.synced = true
   locker.locker_administrator = locker_admin
 end
 
@@ -39,9 +40,7 @@ locker3 = Locker.find_or_create_by!(number: "3") do |locker|
   locker.owner_email = "lheuze@miuandes.cl"
   locker.last_opened = Time.now
   locker.last_closed = Time.now
-  locker.model_version = "1.0"
   locker.access_count = 0
-  locker.synced = true
   locker.locker_administrator = locker_admin
 end
 

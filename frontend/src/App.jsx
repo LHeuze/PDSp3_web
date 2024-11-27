@@ -6,6 +6,7 @@ import ShowLockerPage from './pages/lockers/ShowLockerPage';
 import EditLockerPage from './pages/lockers/EditLockerPage';
 import LockerLogPage from './pages/lockers/LockerLogPage';
 import LockerAdminPage from './pages/locker_adminstrators/LockerAdminPage';
+import AddNewLockerAdmin from './pages/locker_adminstrators/AddNewLockerAdmin';
 import SuperuserDashboard from './pages/superuser/DashboardPage'
 import UserManagement from './pages/superuser/ManageUsersPage'
 import LoginPage from './pages/login/LoginPage';
@@ -49,6 +50,7 @@ function App() {
         <Route path="/locker_administrators/:adminId/lockers" element={<ProtectedRoute element={<LockersPage />} />} />
         <Route path="/lockers/:lockerId" element={<ProtectedRoute element={<ShowLockerPage />} />} />
         <Route path="/locker_administrators" element={<ProtectedRoute element={<LockerAdminPage />} />} />
+        <Route path="/locker_administrators/new" element={<AddNewLockerAdmin />} />
         <Route path="/lockers/:lockerId/edit" element={<ProtectedRoute element={<EditLockerPage />} />} />
         <Route path="/superuser/dashboard" element={<SuperuserDashboard />} />
         <Route path="/superuser/users" element={<UserManagement />} />

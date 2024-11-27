@@ -60,7 +60,8 @@ const Login = ({ setUser }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#f9f5e8'
+        backgroundColor: '#f9f5e8',
+        width: '100vw'
       }}
     >
       <Container 

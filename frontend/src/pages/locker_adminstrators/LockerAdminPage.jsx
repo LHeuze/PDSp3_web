@@ -87,7 +87,18 @@ function LockerAdministratorsPage() {
       <Typography variant="h4" sx={{ color: '#3d3b4e', fontWeight: 'bold', marginBottom: 4 }}>
         ADMINISTRADORES DE CASILLEROS
       </Typography>
-
+      <Button
+            variant="contained"
+            sx={{
+              backgroundColor: 'limegreen',
+              color: '#3d3b4e',
+              fontWeight: 'bold',
+              marginBottom: '20px'
+            }}
+            onClick={() => navigate('/locker_administrators/new')}
+          >
+            AGREGAR CONTOLADOR
+        </Button>
       {error && (
         <Typography color="error" sx={{ marginBottom: 2 }}>
           {error}
@@ -212,7 +223,6 @@ function LockerAdministratorsPage() {
       </Grid>
 
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
-        
         <Button
           variant="contained"
           sx={{

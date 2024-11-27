@@ -40,15 +40,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_26_191327) do
     t.string "owner_email", null: false
     t.datetime "last_opened"
     t.datetime "last_closed"
-    t.string "model_version"
     t.integer "access_count", default: 0
-    t.boolean "synced", default: true
+    t.bigint "locker_administrator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "locker_administrator_id"
     t.string "name"
     t.index ["locker_administrator_id"], name: "index_lockers_on_locker_administrator_id"
-    t.index ["number"], name: "index_lockers_on_number", unique: true
+    t.index ["number", "locker_administrator_id"], name: "index_lockers_on_number_and_locker_administrator_id", unique: true
   end
 
   create_table "models", force: :cascade do |t|
