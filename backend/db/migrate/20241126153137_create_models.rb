@@ -3,8 +3,7 @@ class CreateModels < ActiveRecord::Migration[7.1]
     create_table :models do |t|
       t.string :name, null: false
       t.string :gestures, array: true, default: []
-      t.string :file
-      t.references :locker_administrator, foreign_key: true
+      t.references :user, foreign_key: true
 
       t.timestamps
     end

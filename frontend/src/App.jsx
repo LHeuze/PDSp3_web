@@ -9,6 +9,9 @@ import LockerAdminPage from './pages/locker_adminstrators/LockerAdminPage';
 import AddNewLockerAdmin from './pages/locker_adminstrators/AddNewLockerAdmin';
 import SuperuserDashboard from './pages/superuser/DashboardPage'
 import UserManagement from './pages/superuser/ManageUsersPage'
+import NewModelForm from './pages/superuser/NewModelPage'
+import ManageModels from './pages/superuser/ManageModels'
+import ModelDetails from './pages/superuser/ModelDetails'
 import LoginPage from './pages/login/LoginPage';
 import TopBar from './components/TopBar';
 
@@ -54,6 +57,9 @@ function App() {
         <Route path="/lockers/:lockerId/edit" element={<ProtectedRoute element={<EditLockerPage />} />} />
         <Route path="/superuser/dashboard" element={<SuperuserDashboard />} />
         <Route path="/superuser/users" element={<UserManagement />} />
+        <Route path="/models" element={<ManageModels />} />
+        <Route path="/models/new" element={<NewModelForm />} />
+        <Route path="/models/:id/details" element={<ModelDetails />} />
         <Route path="/lockers/:lockerId/log" element={<LockerLogPage />} />
 
         {/* Catch-all route */}

@@ -10,12 +10,12 @@ function SuperuserDashboard() {
     <Box
       sx={{
         position: 'fixed',
-        top: 64, // Adjust this value to match the height of your top bar
+        top: 64,
         left: 0,
         right: 0,
         bottom: 0,
         backgroundColor: '#f9f5e8',
-        overflowY: 'auto', // Adds scrolling if content exceeds screen height
+        overflowY: 'auto',
         px: { xs: 2, sm: 4, md: 6 }
       }}
     >
@@ -47,7 +47,7 @@ function SuperuserDashboard() {
                   variant="contained"
                   fullWidth
                   sx={{ mt: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
-                  onClick={() => navigate('/superuser/models')}
+                  onClick={() => navigate('/models')}
                 >
                   Go to Models
                 </Button>

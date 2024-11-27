@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Button, Card, CardContent, Grid, TextField, IconButton } from '@mui/material';
-import { Person, Edit } from '@mui/icons-material';
+import { Person, Edit, Margin } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -87,18 +87,34 @@ function LockerAdministratorsPage() {
       <Typography variant="h4" sx={{ color: '#3d3b4e', fontWeight: 'bold', marginBottom: 4 }}>
         ADMINISTRADORES DE CASILLEROS
       </Typography>
-      <Button
+      <Box >
+        <Button
+              variant="contained"
+              sx={{
+                backgroundColor: 'limegreen',
+                color: '#3d3b4e',
+                fontWeight: 'bold',
+                marginBottom: '20px',
+                marginRight: '20px'
+              }}
+              onClick={() => navigate('/locker_administrators/new')}
+            >
+              AGREGAR CONTOLADOR
+          </Button>
+
+          <Button
             variant="contained"
             sx={{
               backgroundColor: 'limegreen',
               color: '#3d3b4e',
               fontWeight: 'bold',
-              marginBottom: '20px'
+              marginBottom: '20px',
             }}
             onClick={() => navigate('/locker_administrators/new')}
           >
-            AGREGAR CONTOLADOR
-        </Button>
+            CAMBIAR MODELO
+          </Button>
+        </Box>
       {error && (
         <Typography color="error" sx={{ marginBottom: 2 }}>
           {error}
@@ -154,9 +170,6 @@ function LockerAdministratorsPage() {
                     
                   </>
                 )}
-                <Typography variant="body1" sx={{ marginBottom: 2 }}>
-                  Usuario: {admin.user?.email || 'Sin usuario asociado'}
-                </Typography>
                 <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
                   Casilleros activos: {admin.amount_of_lockers || 'No especificado'}
                 </Typography>

@@ -33,17 +33,17 @@ function UserManagement() {
     >
       <Box sx={{ textAlign: 'center', mt: 4 }}>
         <Typography variant="h4" sx={{ color: '#3d3b4e', fontWeight: 'bold', mb: 4 }}>
-          MANAGE USERS
+          GESTIONAR USUARIOS
         </Typography>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>ID</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Role</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableCell>Nombre</TableCell>
+                <TableCell>Mail</TableCell>
+                <TableCell>Rol</TableCell>
+                <TableCell>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -59,10 +59,10 @@ function UserManagement() {
                       color="primary"
                       onClick={() => navigate(`/superuser/users/${user.id}/edit`)}
                     >
-                      Edit
+                      Editar
                     </Button>
                     <Button variant="outlined" color="error" sx={{ ml: 2 }}>
-                      Delete
+                      BORRAR
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -75,7 +75,7 @@ function UserManagement() {
           sx={{ mt: 4, backgroundColor: '#f44336', color: '#fff', fontWeight: 'bold' }}
           onClick={() => navigate('/superuser/dashboard')}
         >
-          Go Back to Dashboard
+          VOLVER AL DASHBOARD
         </Button>
       </Box>
     </Box>
