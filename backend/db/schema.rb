@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_27_184130) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_28_161040) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -96,7 +96,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_27_184130) do
     t.datetime "updated_at", null: false
     t.string "role"
     t.string "name"
+    t.bigint "model_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["model_id"], name: "index_users_on_model_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -106,4 +108,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_27_184130) do
   add_foreign_key "locker_events", "lockers"
   add_foreign_key "lockers", "locker_administrators"
   add_foreign_key "models", "users"
+  add_foreign_key "users", "models"
 end

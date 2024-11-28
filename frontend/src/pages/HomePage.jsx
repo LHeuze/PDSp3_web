@@ -31,7 +31,7 @@ function HomePage() {
         <Button
           variant="contained"
           color="success"
-          sx={{ fontSize: '1rem', fontWeight: 'bold', padding: '10px 20px' }}
+          sx={{ fontSize: '1rem', fontWeight: 'bold', padding: '10px 20px', marginBottom: '20px' }}
           onClick={() => navigate('/superuser/dashboard')}
         >
           Superuser Dashboard

@@ -1,6 +1,14 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_request, only: [:google_sign_in]
 
+  def update_model
+    if @current_user.update(model_id: params[:model_id])
+      render json: { message: "Model updated successfully", model_id: @current_user.model_id }, status: :ok
+    else
+      render json: { errors: @current_user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+  
   def google_sign_in
     token = params[:token]
     validator = GoogleIDToken::Validator.new

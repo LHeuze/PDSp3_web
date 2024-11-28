@@ -6,6 +6,7 @@ class User < ApplicationRecord
   before_create :set_default_role
   enum role: { locker_admin: 'locker_admin', superuser: 'superuser' }
   has_many :locker_administrators
+  belongs_to :model, optional: true
 
   # Method to generate a JWT token for the user
   def generate_auth_token

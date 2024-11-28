@@ -27,14 +27,14 @@ function SuperuserDashboard() {
           <Grid item xs={12} sm={6} md={4}>
             <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen', height: '100%' }}>
               <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6">Manage Users</Typography>
+                <Typography variant="h6">Gestionar Usuarios</Typography>
                 <Button
                   variant="contained"
                   fullWidth
                   sx={{ mt: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
                   onClick={() => navigate('/superuser/users')}
                 >
-                  Go to Users
+                  Ver Usuarios
                 </Button>
               </CardContent>
             </Card>
@@ -42,14 +42,14 @@ function SuperuserDashboard() {
           <Grid item xs={12} sm={6} md={4}>
             <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen', height: '100%' }}>
               <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6">Manage Models</Typography>
+                <Typography variant="h6">Gestionar Usuarios</Typography>
                 <Button
                   variant="contained"
                   fullWidth
                   sx={{ mt: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
                   onClick={() => navigate('/models')}
                 >
-                  Go to Models
+                  Ver Modelos
                 </Button>
               </CardContent>
             </Card>
@@ -60,7 +60,7 @@ function SuperuserDashboard() {
           sx={{ mt: 4, backgroundColor: '#f44336', color: '#fff', fontWeight: 'bold' }}
           onClick={() => navigate('/')}
         >
-          Go Back to Home
+          Volver
         </Button>
       </Box>
     </Box>

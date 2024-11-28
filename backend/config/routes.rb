@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   # root "posts#index"
   namespace :api do
     namespace :v1 do
+      resources :models, only: [:index, :update]
+      patch '/user/update_model', to: 'models#update_user_model'
       namespace :superuser do
         get 'dashboard', to: 'dashboard#index'
         resources :models
