@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_28_161040) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_28_190541) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_28_161040) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "gestures", force: :cascade do |t|
+    t.string "name"
+    t.bigint "model_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["model_id"], name: "index_gestures_on_model_id"
   end
 
   create_table "locker_administrators", force: :cascade do |t|
@@ -79,7 +87,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_28_161040) do
 
   create_table "models", force: :cascade do |t|
     t.string "name", null: false
-    t.string "gestures", default: [], array: true
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -104,6 +111,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_28_161040) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "gestures", "models"
   add_foreign_key "locker_administrators", "users"
   add_foreign_key "locker_events", "lockers"
   add_foreign_key "lockers", "locker_administrators"

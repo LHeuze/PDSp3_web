@@ -32,11 +32,15 @@ function NewModelForm() {
       const updatedImages = [...gestureImages];
       updatedImages[index] = file;
       setGestureImages(updatedImages);
+      setImagesAdded(prev => {
+        const updated = [...prev];
+        updated[index] = true;
+        return updated;
+      });
     } else {
       console.error("Invalid file input");
     }
   };
-  
 
   const handleFileChange = (file) => {
     setFile(file);
@@ -45,26 +49,35 @@ function NewModelForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (gestureImages.length !== 6) {
-      setError("Debe proporcionar exactamente 6 imágenes para los gestos.");
-      return;
-    }
+    
+    // Check if all gestures have been provided
     if (gestures.some((gesture) => gesture.trim() === "")) {
       setError("Debe proporcionar exactamente 6 gestos.");
       return;
     }
+  
+    // Check if all gesture images are uploaded
+    if (imagesAdded.includes(false)) {
+      setError("Debe proporcionar imágenes para todos los gestos.");
+      return;
+    }
+  
     const formData = new FormData();
     formData.append("name", name);
-    gestures.forEach((gesture, index) =>
-      formData.append(`gestures[${index}]`, gesture)
-    );
-    gestureImages.forEach((image, index) =>
-      formData.append(`gesture_images[${index}]`, image)
-    );
-    formData.append("file", file);
-
+  
+    // Append gestures and their corresponding images
+    gestures.forEach((gesture, index) => {
+      formData.append(`gestures[${index}][name]`, gesture);
+      formData.append(`gestures[${index}][image]`, gestureImages[index]);
+    });
+  
+    // Append the model file
+    if (file) {
+      formData.append("file", file);
+    }
+  
     const token = localStorage.getItem("authToken");
-
+  
     try {
       await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/v1/superuser/models`,
@@ -85,6 +98,7 @@ function NewModelForm() {
       setSuccess(false);
     }
   };
+  
 
   return (
     <Box
@@ -129,53 +143,50 @@ function NewModelForm() {
           onChange={(e) => setName(e.target.value)}
           required
         />
+
         <Typography variant="h6" sx={{ mt: 2, mb: 1, color: "#3d3b4e" }}>
           Gestos
         </Typography>
         <Grid container spacing={2}>
           {gestures.map((gesture, index) => (
-            <Grid item xs={12} sm={6} key={index}>
-              <TextField
-                label={`Gesto ${index + 1}`}
-                variant="outlined"
-                value={gesture}
-                onChange={(e) => handleGestureChange(index, e.target.value)}
-                required
-              />
-            </Grid>
-          ))}
-        </Grid>
-        <Typography variant="h6" sx={{ mt: 2, mb: 1, color: "#3d3b4e" }}>
-          Imágenes de Gestos
-        </Typography>
-        <Grid container spacing={2}>
-          {Array.from({ length: 6 }).map((_, index) => (
-            <Grid item xs={12} sm={6} key={index}>
-              <Button
-                variant="outlined"
-                component="label"
-                fullWidth
-                sx={{
-                  textAlign: "center",
-                  backgroundColor: imagesAdded[index] ? "limegreen" : "inherit",
-                  color: imagesAdded[index] ? "white" : "inherit",
-                }}
-              >
-                {imagesAdded[index] ? "Imagen Subida" : `Subir Imagen ${index + 1}`}
-                <input
-                  type="file"
-                  hidden
-                  accept="image/*"
-                  onChange={(e) => {
-                    if (e.target.files.length > 0) {
-                      handleGestureImageChange(index, e.target.files[0]);
-                    }
-                  }}
+            <Grid container item spacing={2} key={index} xs={12}>
+              <Grid item xs={5}>
+                <TextField
+                  label={`Gesto ${index + 1}`}
+                  variant="outlined"
+                  value={gesture}
+                  onChange={(e) => handleGestureChange(index, e.target.value)}
+                  required
                 />
-              </Button>
+              </Grid>
+              <Grid item xs={5}>
+                <Button
+                  variant="outlined"
+                  component="label"
+                  fullWidth
+                  sx={{
+                    textAlign: "center",
+                    backgroundColor: imagesAdded[index] ? "limegreen" : "Black",
+                    color: imagesAdded[index] ? "white" : "inherit",
+                  }}
+                >
+                  {imagesAdded[index] ? "Imagen Subida" : `Subir Imagen ${index + 1}`}
+                  <input
+                    type="file"
+                    hidden
+                    accept="image/*"
+                    onChange={(e) => {
+                      if (e.target.files.length > 0) {
+                        handleGestureImageChange(index, e.target.files[0]);
+                      }
+                    }}
+                  />
+                </Button>
+              </Grid>
             </Grid>
           ))}
         </Grid>
+
         <Typography variant="h6" sx={{ mt: 2, mb: 1, color: "#3d3b4e" }}>
           Archivo del Modelo
         </Typography>
@@ -184,7 +195,7 @@ function NewModelForm() {
           component="label"
           fullWidth
           sx={{
-            backgroundColor: fileAdded ? "limegreen" : "inherit",
+            backgroundColor: fileAdded ? "limegreen" : "Black",
             color: fileAdded ? "White" : "inherit",
           }}
         >
@@ -195,6 +206,7 @@ function NewModelForm() {
             onChange={(e) => handleFileChange(e.target.files[0])}
           />
         </Button>
+
         <Button
           type="submit"
           variant="contained"

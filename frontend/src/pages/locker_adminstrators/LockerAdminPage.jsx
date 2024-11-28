@@ -156,7 +156,7 @@ function LockerAdministratorsPage() {
         {currentModel ? (
           <FormControl sx={{ minWidth: 200 }}>
             <InputLabel id="select-model-label">
-              Modelo Actual: {currentModel?.name}
+              Modelo Actual
             </InputLabel>
             <Select
               labelId="select-model-label"

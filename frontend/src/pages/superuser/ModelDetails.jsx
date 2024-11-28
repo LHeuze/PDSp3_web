@@ -33,7 +33,7 @@ function ModelDetails() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          width:'100vw',
+          width: '100vw',
           minHeight: "100vh",
           backgroundColor: "#f9f5e8",
         }}
@@ -57,7 +57,7 @@ function ModelDetails() {
         alignItems: "center",
         justifyContent: "flex-start",
         minHeight: "100vh",
-        width:'100vw',
+        width: '100vw',
         backgroundColor: "#f9f5e8",
         padding: 4,
         paddingTop: "80px",
@@ -77,9 +77,9 @@ function ModelDetails() {
 
       <Grid container spacing={3} justifyContent="center">
         {model.gestures.map((gesture, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
+          <Grid item xs={12} sm={6} md={4} key={index}>
             <Card
-                sx={{
+              sx={{
                 backgroundColor: "#3d3b4e",
                 color: "#f9f5e8",
                 textAlign: "center",
@@ -87,39 +87,39 @@ function ModelDetails() {
                 flexDirection: "column", // Ensures vertical stacking
                 height: "100%", // Consistent card height
                 overflow: "hidden", // Prevents content from spilling
-                }}
+              }}
             >
-                {/* Image Section */}
-                <CardMedia
+              {/* Image Section */}
+              <CardMedia
                 component="img"
-                image={`${import.meta.env.VITE_API_BASE_URL}${model.gesture_images[index]}`}
-                alt={`Gesto ${gesture}`}
+                image={`${import.meta.env.VITE_API_BASE_URL}${gesture.image_url}`} // Use the correct key returned from the backend
+                alt={`Gesto ${gesture.name}`}
                 sx={{
-                    height: "200px", // Fixed height for the image container
-                    width: "100%", // Ensures the image spans the card width
-                    objectFit: "contain", // Scales the image while preserving aspect ratio
-                    backgroundColor: "#f9f5e8", // Optional: Adds a background to highlight small images
-                    padding: "10px", // Optional: Adds padding around small images
+                  height: "200px",
+                  width: "100%",
+                  objectFit: "contain",
+                  backgroundColor: "#f9f5e8",
+                  padding: "10px",
                 }}
-                />
-                {/* Text Section */}
-                <CardContent
+              />
+              {/* Text Section */}
+              <CardContent
                 sx={{
-                    padding: 2,
-                    flexGrow: 1, // Ensures this section expands properly
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                  padding: 2,
+                  flexGrow: 1, // Ensures this section expands properly
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-                >
+              >
                 <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                    {gesture}
+                  {gesture.name}
                 </Typography>
-                </CardContent>
+              </CardContent>
             </Card>
-            </Grid>
+          </Grid>
         ))}
-        </Grid>
+      </Grid>
 
       <Button
         variant="contained"

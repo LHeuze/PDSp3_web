@@ -3,28 +3,25 @@ class LockerMailer < ApplicationMailer
     @locker = locker
     @owner_email = @locker.owner_email
     @new_password = @locker.password
-  
-    locker_number_gesture_map = { 1 => 'c', 2 => 'fist', 3 => 'five' }
-    locker_number_as_int = @locker.number.to_i
-    @locker_number_gesture = locker_number_gesture_map[locker_number_as_int]
-  
-    if @locker_number_gesture
-      attachments.inline["locker_select_#{@locker_number_gesture}.jpg"] = File.read("app/assets/images/gestures/#{@locker_number_gesture}.jpg")
-    end
-  
-    attached_gestures = []
-    @new_password.each do |gesture|
-      gesture_downcased = gesture.downcase
-      unless attached_gestures.include?(gesture_downcased)
-        attachments.inline["#{gesture_downcased}.jpg"] = File.read("app/assets/images/gestures/#{gesture_downcased}.jpg")
-        attached_gestures << gesture_downcased
+
+    # Fetch associated model from locker administrator's user
+    model = @locker.locker_administrator.user.model
+
+    if model.present?
+      # Attach images dynamically from the model's gesture_images
+      @new_password.each_with_index do |gesture, index|
+        # Ensure we attach the correct image corresponding to the gesture
+        if index < model.gesture_images.count
+          image = model.gesture_images[index]
+          attachments.inline["gesture_#{gesture.downcase}.jpg"] = image.download
+        end
       end
+    else
+      Rails.logger.warn("No model associated with the locker administrator's user.")
     end
-  
+
     mail(to: @owner_email, subject: 'Your Locker Password Has Been Updated')
   end
-  
-  
 
   def locker_notification_email
     @message = params[:message]

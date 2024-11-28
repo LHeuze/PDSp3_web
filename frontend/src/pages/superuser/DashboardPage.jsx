@@ -42,7 +42,7 @@ function SuperuserDashboard() {
           <Grid item xs={12} sm={6} md={4}>
             <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen', height: '100%' }}>
               <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6">Gestionar Usuarios</Typography>
+                <Typography variant="h6">Gestionar Modelos</Typography>
                 <Button
                   variant="contained"
                   fullWidth
@@ -57,7 +57,7 @@ function SuperuserDashboard() {
         </Grid>
         <Button
           variant="contained"
-          sx={{ mt: 4, backgroundColor: '#f44336', color: '#fff', fontWeight: 'bold' }}
+          sx={{ mt: 4, backgroundColor: '#3d3b4e', color: '#fff', fontWeight: 'bold' }}
           onClick={() => navigate('/')}
         >
           Volver

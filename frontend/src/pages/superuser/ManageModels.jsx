@@ -28,6 +28,7 @@ function ManageModels() {
       })
       .then((response) => {
         setModels(response.data);
+        console.log(response.data)
       })
       .catch((err) => {
         console.error("Error fetching models:", err);
@@ -133,7 +134,8 @@ function ManageModels() {
                 <TableRow key={model.id}>
                   <TableCell>{model.id}</TableCell>
                   <TableCell>{model.name}</TableCell>
-                  <TableCell>{model.gestures.join(", ")}</TableCell>
+                  {/* Display the gestures names */}
+                  <TableCell>{model.gestures.map((gesture) => gesture.name).join(", ")}</TableCell>
                   <TableCell>
                     <Button
                       variant="outlined"

@@ -2,7 +2,7 @@ module Api
   module V1
     class LockersController < ApplicationController
       before_action :authenticate_request
-      before_action :set_locker, only: [:events]
+      before_action :set_locker, only: [:show, :events]
       
       def index
         @lockers = Locker.order(:number)
@@ -12,8 +12,14 @@ module Api
       end
 
       def show
-        locker = Locker.find(params[:id])
-        render json: locker.as_json(methods: [:formatted_last_opened, :formatted_last_closed])
+        # Fetch the user associated with the locker administrator
+        user = @locker.locker_administrator.user
+        model = user.model # Fetch the current model of the user
+        gestures = model&.gestures || [] # Handle case where user might not have a model
+    
+        render json: @locker.as_json.merge({
+          gestures: gestures
+        })
       end
 
       def update

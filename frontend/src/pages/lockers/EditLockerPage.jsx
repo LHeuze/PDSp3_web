@@ -1,49 +1,59 @@
-// src/pages/EditLockerPage.jsx
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Button, TextField, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Button,
+  TextField,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+} from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function EditLockerPage() {
   const { lockerId } = useParams();
   const [locker, setLocker] = useState(null);
+  const [gestures, setGestures] = useState([]);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
   const token = localStorage.getItem('authToken');
-  
-  // Define available gestures
-  const gestures = ["fist", "five", "peace", "rad", "C", "thumb"];
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers/${lockerId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(response => {
+    // Fetch locker details
+    axios
+      .get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers/${lockerId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
         setLocker(response.data);
       })
-      .catch(error => {
-        console.error("Error fetching locker:", error);
+      .catch((error) => {
+        console.error('Error fetching locker:', error);
+        setError('Failed to fetch locker details.');
       });
   }, [lockerId]);
 
   const handleSave = () => {
-    // Only send permitted fields
     const payload = {
       password: locker.password,
-      model_version: locker.model_version,
-      owner_email: locker.owner_email
+      owner_email: locker.owner_email,
     };
-    axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers/${lockerId}`, payload, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    axios
+      .put(`${import.meta.env.VITE_API_BASE_URL}/api/v1/lockers/${lockerId}`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
         navigate(`/lockers/${lockerId}`);
       })
-      .catch(error => {
-        console.error("Error updating locker:", error);
+      .catch((error) => {
+        console.error('Error updating locker:', error);
+        setError('Failed to save changes.');
       });
   };
 
@@ -58,7 +68,7 @@ function EditLockerPage() {
   }
 
   return (
-    <Box 
+    <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -68,28 +78,31 @@ function EditLockerPage() {
         width: '100vw',
         padding: 4,
         textAlign: 'center',
-        paddingTop: '80px'
+        paddingTop: '80px',
       }}
     >
-      <Typography variant="h4" sx={{ color: '#3d3b4e', fontWeight: 'bold', marginBottom: 4 }}>
+      <Typography
+        variant="h4"
+        sx={{ color: '#3d3b4e', fontWeight: 'bold', marginBottom: 4 }}
+      >
         Editar Casillero {locker.number}
       </Typography>
+
+      {/* Error Display */}
+      {error && (
+        <Typography color="error" sx={{ marginBottom: 2 }}>
+          {error}
+        </Typography>
+      )}
 
       {/* Editable Fields */}
       <TextField
         label="Email"
-        value={locker.owner_email || ""}
+        value={locker.owner_email || ''}
         onChange={(e) => setLocker({ ...locker, owner_email: e.target.value })}
         fullWidth
         sx={{ marginBottom: 2 }}
       />
-      {/* <TextField
-        label="Model Version"
-        value={locker.model_version}
-        onChange={(e) => setLocker({ ...locker, model_version: e.target.value })}
-        fullWidth
-        sx={{ marginBottom: 2 }}
-    /> */}
 
       {/* Password Modification */}
       <Typography variant="h6" sx={{ fontWeight: 'bold', marginTop: 2, color: 'black' }}>
@@ -97,14 +110,19 @@ function EditLockerPage() {
       </Typography>
       <Box sx={{ display: 'flex', gap: 2, marginTop: 2, justifyContent: 'center' }}>
         {Array.from({ length: 4 }).map((_, index) => (
-          <FormControl key={index} sx={{ minWidth: 80 }}>
+          <FormControl key={index} sx={{ minWidth: 120 }}>
             <InputLabel>Gesto {index + 1}</InputLabel>
             <Select
-              value={locker.password[index] || ""}
-              label={`Gesture ${index + 1}`}
+              value={locker.password[index] || ''}
+              label={`Gesto ${index + 1}`}
               onChange={(e) => handlePasswordChange(index, e.target.value)}
+              disabled={!locker.gestures?.length} // Disable if gestures are not loaded
+              displayEmpty
             >
-              {gestures.map((gesture) => (
+              <MenuItem value="" disabled>
+                {locker.password[index] ? `Seleccionado: ${locker.password[index]}` : 'Selecciona un gesto'}
+              </MenuItem>
+              {locker.gestures?.map((gesture) => (
                 <MenuItem key={gesture} value={gesture}>
                   {gesture}
                 </MenuItem>
@@ -118,6 +136,7 @@ function EditLockerPage() {
         variant="contained"
         sx={{ marginTop: 3, backgroundColor: 'limegreen', color: '#3d3b4e' }}
         onClick={handleSave}
+        disabled={!locker.gestures?.length}
       >
         Guardar cambios
       </Button>

@@ -15,6 +15,11 @@
 <ul>
   <% @new_password.each do |gesture| %>
     <li><%= gesture.capitalize %></li>
-    <%= image_tag attachments.inline["#{gesture.downcase}.jpg"].url, style: "width: 100px; height: 100px; vertical-align: middle;" %>
+    <% if attachments.inline["#{gesture.downcase}.jpg"] %>
+      <%= image_tag attachments.inline["#{gesture.downcase}.jpg"].url, style: "width: 100px; height: 100px; vertical-align: middle;" %>
+    <% else %>
+      <p>Image not available for <%= gesture %>.</p>
+    <% end %>
   <% end %>
 </ul>
+

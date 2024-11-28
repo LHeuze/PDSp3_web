@@ -8,50 +8,64 @@ module Api
 
         # GET /api/v1/superuser/models
         def index
-          models = Model.where(user: @current_user)
-          render json: models, status: :ok
+          # Fetch models for the current user, and include their gestures
+          models = Model.includes(:gestures).where(user_id: current_user.id)
+      
+          # Manually build the response to include gestures
+          models_with_gestures = models.map do |model|
+            {
+              id: model.id,
+              name: model.name,
+              user_id: model.user_id,
+              created_at: model.created_at,
+              updated_at: model.updated_at,
+              gestures: model.gestures.map { |gesture| { name: gesture.name, image: url_for(gesture.image) } }
+            }
+          end
+      
+          # Respond with the models and their gestures
+          render json: models_with_gestures
         end
+
 
         # GET /api/v1/superuser/models/:id
         def show
           render json: @model.as_json.merge({
-            gesture_images: @model.gesture_images.map { |image| Rails.application.routes.url_helpers.rails_blob_path(image, only_path: true) }
-          })
+            gestures: @model.gestures.map { |gesture| 
+              {
+                name: gesture.name,
+                image_url: Rails.application.routes.url_helpers.rails_blob_path(gesture.image, only_path: true)
+              }
+            }
+            })
         end
-
 
         # POST /api/v1/superuser/models
         def create
-          model = Model.new(model_params)
-          model.user = @current_user
-
-          # Attach the AI model file
-          if params[:file].present?
-            model.file.attach(params[:file])
-          else
-            return render json: { error: "El archivo del modelo es obligatorio" }, status: :unprocessable_entity
+          permitted_params = model_params
+        
+          # Now gestures is a hash, so we can process it correctly
+          gestures = permitted_params[:gestures].values.map do |gesture_data|
+            # Create a new Gesture object using the data from the params
+            Gesture.new(name: gesture_data[:name], image: gesture_data[:image])
           end
-
-          # Attach the gesture images
-          if params[:gesture_images].present?
-            params[:gesture_images].each do |_, image|
-              if image.is_a?(ActionDispatch::Http::UploadedFile)
-                model.gesture_images.attach(image)
-              else
-                Rails.logger.error("Invalid gesture image: #{image}")
-              end
-            end
-          else
-            return render json: { error: "Las imágenes de los gestos son obligatorias" }, status: :unprocessable_entity
+        
+          # Create the Model object
+          model = current_user.models.create(name: permitted_params[:name], file: permitted_params[:file])
+        
+          # Attach the gestures (assuming the model has a `has_many :gestures` association)
+          gestures.each do |gesture|
+            model.gestures << gesture
           end
-
+        
           if model.save
             render json: model, status: :created
           else
-            render json: { errors: model.errors.full_messages }, status: :unprocessable_entity
+            render json: model.errors, status: :unprocessable_entity
           end
         end
-
+        
+          
         # PUT /api/v1/superuser/models/:id
         def update
           if @model.update(model_update_params)
@@ -91,10 +105,7 @@ module Api
         end
 
         def model_params
-          {
-            name: params[:name],
-            gestures: params[:gestures]&.values
-          }
+          params.permit(:name, :file, gestures: [:name, :image])
         end
 
         def model_update_params
