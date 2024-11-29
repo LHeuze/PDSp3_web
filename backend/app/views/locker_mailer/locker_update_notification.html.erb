@@ -1,4 +1,4 @@
-<p>Tu casillero (Number: <%= @locker.number %>) ha sido modificado y tiene nueva contraseña.</p>
+<p>Tu casillero (Numero: <%= @locker.number %>) ha sido modificado y tiene nueva contraseña.</p>
 
 <h2>Instrucciones</h2>
 <p>1. Para abrir el casillero, acerca la mano al sensor en la caja para iniciar la interacción.</p>
@@ -6,7 +6,7 @@
 
 <% if @locker_number_gesture %>
   <p>Gesto para seleccionar el casillero <%= @locker.number %>:</p>
-  <%= image_tag attachments.inline["locker_select_#{@locker_number_gesture}.jpg"].url, style: "width: 100px; height: 100px; vertical-align: middle;" %>
+  <%= image_tag "cid:locker_select_#{@locker_number_gesture}.jpg", style: "width: 100px; height: 100px; vertical-align: middle;" %>
 <% end %>
 
 <p>3. Finalmente, realiza los gestos en el orden que se muestra en la contraseña de este mail:</p>
@@ -16,10 +16,9 @@
   <% @new_password.each do |gesture| %>
     <li><%= gesture.capitalize %></li>
     <% if attachments.inline["#{gesture.downcase}.jpg"] %>
-      <%= image_tag attachments.inline["#{gesture.downcase}.jpg"].url, style: "width: 100px; height: 100px; vertical-align: middle;" %>
+      <%= image_tag "cid:#{gesture.downcase}.jpg", style: "width: 100px; height: 100px; vertical-align: middle;" %>
     <% else %>
       <p>Image not available for <%= gesture %>.</p>
     <% end %>
   <% end %>
 </ul>
-

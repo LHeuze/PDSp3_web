@@ -30,6 +30,7 @@ function EditLockerPage() {
       })
       .then((response) => {
         setLocker(response.data);
+        setGestures(response.data.gestures || []); // Assuming gestures are part of locker data
       })
       .catch((error) => {
         console.error('Error fetching locker:', error);
@@ -39,7 +40,7 @@ function EditLockerPage() {
 
   const handleSave = () => {
     const payload = {
-      password: locker.password,
+      password: locker.password,  // If password is an array, ensure it's formatted correctly
       owner_email: locker.owner_email,
     };
     axios
@@ -113,18 +114,21 @@ function EditLockerPage() {
           <FormControl key={index} sx={{ minWidth: 120 }}>
             <InputLabel>Gesto {index + 1}</InputLabel>
             <Select
-              value={locker.password[index] || ''}
+              value={locker.password[index] || ''}  // Default value is the current gesture
               label={`Gesto ${index + 1}`}
-              onChange={(e) => handlePasswordChange(index, e.target.value)}
-              disabled={!locker.gestures?.length} // Disable if gestures are not loaded
-              displayEmpty
+              onChange={(e) => handlePasswordChange(index, e.target.value)}  // Handle new selection
+              disabled={!gestures.length}  // Disable if gestures are not loaded
+              displayEmpty  // Show empty placeholder when no value is selected
             >
+              {/* If no gesture has been selected yet, display a default prompt */}
               <MenuItem value="" disabled>
                 {locker.password[index] ? `Seleccionado: ${locker.password[index]}` : 'Selecciona un gesto'}
               </MenuItem>
-              {locker.gestures?.map((gesture) => (
-                <MenuItem key={gesture} value={gesture}>
-                  {gesture}
+
+              {/* Display all available gestures */}
+              {gestures.map((gesture) => (
+                <MenuItem key={gesture.name} value={gesture.name}>
+                  {gesture.name}
                 </MenuItem>
               ))}
             </Select>
@@ -136,7 +140,7 @@ function EditLockerPage() {
         variant="contained"
         sx={{ marginTop: 3, backgroundColor: 'limegreen', color: '#3d3b4e' }}
         onClick={handleSave}
-        disabled={!locker.gestures?.length}
+        disabled={!gestures.length}
       >
         Guardar cambios
       </Button>
