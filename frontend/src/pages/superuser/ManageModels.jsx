@@ -19,6 +19,24 @@ function ManageModels() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const handleDeleteModel = (modelId) => {
+    const token = localStorage.getItem("authToken");
+  
+    axios
+      .delete(`${import.meta.env.VITE_API_BASE_URL}/api/v1/superuser/models/${modelId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        // Remove the deleted model from the state
+        setModels((prevModels) => prevModels.filter((model) => model.id !== modelId));
+        setError('');
+      })
+      .catch((err) => {
+        console.error("Error deleting model:", err);
+        setError("No se pudo eliminar el modelo. Intenta nuevamente.");
+      });
+  };
+  
   useEffect(() => {
     const token = localStorage.getItem("authToken");
 
@@ -150,7 +168,7 @@ function ManageModels() {
                       variant="outlined"
                       color="error"
                       size="small"
-                      onClick={() => console.log(`Eliminar modelo: ${model.id}`)}
+                      onClick={() => handleDeleteModel(model.id)}
                     >
                       Eliminar
                     </Button>
