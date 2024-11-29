@@ -26,47 +26,46 @@ function LockerAdministratorsPage() {
   const [editingId, setEditingId] = useState(null);
   const [editedName, setEditedName] = useState('');
   const navigate = useNavigate();
+  
+  const handleCancel = () => {
+    setEditingId(null);
+    setEditedName('');
+  };
+
+  const handleEdit = (id, currentName) => {
+    setEditingId(id);
+    setEditedName(currentName);
+  };
+
+  const handleSave = (id) => {
+    const token = localStorage.getItem('authToken');
+
+    axios
+      .patch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/locker_administrators/${id}`,
+        { name: editedName },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((response) => {
+        setAdministrators((prevAdmins) =>
+          prevAdmins.map((admin) =>
+            admin.id === id ? { ...admin, name: response.data.name } : admin
+          )
+        );
+        setEditingId(null); // Exit edit mode
+      })
+      .catch((error) => {
+        console.error('Error updating locker administrator:', error);
+        setError('Failed to update the name. Please try again.');
+      });
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-
-    const handleEdit = (id, currentName) => {
-      setEditingId(id);
-      setEditedName(currentName);
-    };
-  
-    const handleSave = (id) => {
-      const token = localStorage.getItem('authToken');
-  
-      axios
-        .patch(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/locker_administrators/${id}`,
-          { name: editedName },
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        )
-        .then((response) => {
-          setAdministrators((prevAdmins) =>
-            prevAdmins.map((admin) =>
-              admin.id === id ? { ...admin, name: response.data.name } : admin
-            )
-          );
-          setEditingId(null); // Exit edit mode
-        })
-        .catch((error) => {
-          console.error('Error updating locker administrator:', error);
-          setError('Failed to update the name. Please try again.');
-        });
-    };
-  
-    const handleCancel = () => {
-      setEditingId(null);
-      setEditedName('');
-    };
-
     axios
       .get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/locker_administrators`, {
         headers: {
@@ -88,6 +87,8 @@ function LockerAdministratorsPage() {
       .then((response) => {
         setModels(response.data.models);
         setCurrentModel(response.data.current_model);
+        // Initialize selectedModelId
+        setSelectedModelId(response.data.current_model?.id || '');
       })
       .catch((error) => {
         console.error('Error fetching models:', error);
@@ -117,6 +118,7 @@ function LockerAdministratorsPage() {
         setError('Failed to update the model. Please try again.');
       });
   };
+  
 
   const handleAddAdministrator = () => {
     navigate('/locker_administrators/new');
@@ -153,14 +155,13 @@ function LockerAdministratorsPage() {
 
       {/* Current Model Section */}
       <Box sx={{ marginBottom: 4, textAlign: 'center' }}>
-        {currentModel ? (
+        {models.length > 0 ? (
           <FormControl sx={{ minWidth: 200 }}>
-            <InputLabel id="select-model-label">
-              Modelo Actual
-            </InputLabel>
+            <InputLabel id="select-model-label">Modelo</InputLabel>
             <Select
               labelId="select-model-label"
-              value={selectedModelId || currentModel?.id}
+              value={selectedModelId}
+              label="Modelo"
               onChange={(e) => setSelectedModelId(e.target.value)}
             >
               {models.map((model) => (
@@ -172,7 +173,7 @@ function LockerAdministratorsPage() {
           </FormControl>
         ) : (
           <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#3d3b4e' }}>
-            Cargando modelo actual...
+            No hay modelos disponibles.
           </Typography>
         )}
         <Button
@@ -181,7 +182,7 @@ function LockerAdministratorsPage() {
             marginTop: 2,
             backgroundColor: 'limegreen',
             color: '#3d3b4e',
-            marginLeft:'20px'
+            marginLeft: '20px',
           }}
           onClick={handleChangeModel}
           disabled={!selectedModelId || selectedModelId === currentModel?.id}

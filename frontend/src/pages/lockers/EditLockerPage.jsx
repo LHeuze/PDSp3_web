@@ -112,7 +112,6 @@ function EditLockerPage() {
       <Box sx={{ display: 'flex', gap: 2, marginTop: 2, justifyContent: 'center' }}>
         {Array.from({ length: 4 }).map((_, index) => (
           <FormControl key={index} sx={{ minWidth: 120 }}>
-            <InputLabel>Gesto {index + 1}</InputLabel>
             <Select
               value={locker.password[index] || ''}  // Default value is the current gesture
               label={`Gesto ${index + 1}`}

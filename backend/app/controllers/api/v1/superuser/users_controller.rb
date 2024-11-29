@@ -4,7 +4,7 @@ module Api
     module Superuser
       class UsersController < ApplicationController
         def index
-          users = User.all
+          users = User.where(role:'locker_admin')
           render json: users
         end
 

@@ -9,7 +9,7 @@ module Api
         # GET /api/v1/superuser/models
         def index
           # Fetch models for the current user, and include their gestures
-          models = Model.includes(:gestures).where(user_id: current_user.id)
+          models = Model.includes(:gestures).all
       
           # Manually build the response to include gestures
           models_with_gestures = models.map do |model|
@@ -44,16 +44,15 @@ module Api
         def create
           permitted_params = model_params
         
-          # Now gestures is a hash, so we can process it correctly
+          # Process gestures
           gestures = permitted_params[:gestures].values.map do |gesture_data|
-            # Create a new Gesture object using the data from the params
             Gesture.new(name: gesture_data[:name], image: gesture_data[:image])
           end
         
-          # Create the Model object
-          model = current_user.models.create(name: permitted_params[:name], file: permitted_params[:file])
+          # Create the Model object associated with the current user
+          model = current_user.models.build(name: permitted_params[:name], file: permitted_params[:file])
         
-          # Attach the gestures (assuming the model has a `has_many :gestures` association)
+          # Attach the gestures
           gestures.each do |gesture|
             model.gestures << gesture
           end
@@ -64,6 +63,7 @@ module Api
             render json: model.errors, status: :unprocessable_entity
           end
         end
+        
         
           
         # PUT /api/v1/superuser/models/:id

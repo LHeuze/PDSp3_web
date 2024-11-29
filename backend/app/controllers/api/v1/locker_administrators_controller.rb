@@ -3,7 +3,7 @@ module Api
         class LockerAdministratorsController < ApplicationController
             before_action :authenticate_request
             def index
-                locker_administrators = LockerAdministrator.where(user_id: current_user.id)
+                locker_administrators = LockerAdministrator.all
                 render json: locker_administrators.as_json(
                     only: [:id, :name, :base_topic, :status, :amount_of_lockers],
                     include: { user: { only: [:id, :name, :email] } }

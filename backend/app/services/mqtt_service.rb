@@ -67,7 +67,6 @@ class MqttService
     end
   end
   
-
   def self.send_email_to_owner(email, message)
     # Example email notification method
     LockerMailer.with(email: email, message: message).locker_notification_email.deliver_now

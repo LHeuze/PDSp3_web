@@ -14,7 +14,7 @@ module Api
       def show
         # Fetch the user associated with the locker administrator
         user = @locker.locker_administrator.user
-        model = user.model # Fetch the current model of the user
+        model = user.current_model # Fetch the current model of the user
         gestures = model&.gestures || [] # Handle case where user might not have a model
     
         render json: @locker.as_json.merge({
@@ -25,18 +25,14 @@ module Api
       def update
         Rails.logger.info(params[:locker])
         @locker = Locker.find(params[:id])
-        previous_owner_email = @locker.owner_email
-        previous_password = @locker.password
-
+      
         if @locker.update(locker_params)
-          if @locker.owner_email != previous_owner_email || @locker.password != previous_password
-            LockerMailer.locker_update_notification(@locker).deliver_now
-          end
           render json: @locker, status: :ok
         else
           render json: { error: @locker.errors.full_messages }, status: :unprocessable_entity
         end
       end
+      
 
       def events
         events = @locker.locker_events.order(event_timestamp: :desc)
