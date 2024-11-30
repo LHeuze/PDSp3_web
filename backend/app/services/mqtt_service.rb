@@ -13,10 +13,8 @@ class MqttService
       port: port,
       ssl: true
     )
-  
-    topic = locker_admin.base_topic
+    topic = "#{locker_admin.base_topic}update"
     message = { 
-      locker_admin_id: locker_admin.id, 
       locker_number: locker.number, 
       new_password: locker.password 
     }.to_json
@@ -36,22 +34,31 @@ class MqttService
       ssl: true
     )
   
-    # Subscribe to all locker administrators' base topics
+    Rails.logger.info "Connected to MQTT broker at #{host}:#{port}"
+  
+    # Subscribe to all "base_topic/interaction" topics
     LockerAdministrator.find_each do |admin|
-      client.subscribe(admin.base_topic)
+      topic = "#{admin.base_topic}interaction"
+      Rails.logger.info "Subscribing to topic: #{topic}"
+      client.subscribe(topic)
     end
   
     # Listen for messages
     client.get do |received_topic, message|
+      Rails.logger.info "Received message on topic: #{received_topic}"
       data = JSON.parse(message)
   
-      locker_admin_id = data["locker_admin_id"]
+      # Extract locker_number and status from the message
       locker_number = data["locker_number"]
       status = data["status"]
   
-      if locker_admin_id && locker_number && status
-        locker_admin = LockerAdministrator.find_by(id: locker_admin_id)
-        locker = locker_admin&.lockers&.find_by(number: locker_number)
+      # Find the locker administrator by matching the base_topic
+      base_topic = received_topic.split('/interaction').first + '/'  # Extract base_topic from received_topic
+      locker_admin = LockerAdministrator.find_by(base_topic: base_topic)
+  
+      if locker_admin && locker_number && status
+        # Find the locker associated with the locker administrator
+        locker = locker_admin.lockers.find_by(number: locker_number)
   
         if locker
           event_type = status == "opened" ? "opened" : "closed"
@@ -59,16 +66,60 @@ class MqttService
           action_message = status == "opened" ? "Su casillero ha sido abierto." : "Su casillero ha sido cerrado."
           send_email_to_owner(locker.owner_email, action_message)
         else
-          Rails.logger.error "Locker not found for admin ID #{locker_admin_id} and locker number #{locker_number}"
+          Rails.logger.error "Locker not found for locker number #{locker_number} under base_topic #{base_topic}"
         end
       else
-        Rails.logger.error "Invalid message format received: #{message}"
+        Rails.logger.error "Invalid message or no locker administrator found for topic: #{received_topic}"
       end
     end
   end
   
+  
+  
   def self.send_email_to_owner(email, message)
-    # Example email notification method
     LockerMailer.with(email: email, message: message).locker_notification_email.deliver_now
   end
+  
+  def self.publish_model_file(locker_admin, model)
+    raise "LockerAdministrator must be provided" unless locker_admin
+    raise "Model must be provided" unless model
+
+    # MQTT connection details
+    host = 'broker.emqx.io'
+    port = 8883  # Use SSL/TLS
+
+    client = MQTT::Client.connect(
+      host: host,
+      port: port,
+      ssl: true
+    )
+    Rails.logger.info "Connected to MQTT broker at #{host}:#{port}"
+    topic = "#{locker_admin.base_topic}model"
+
+    # Read the model file
+    file_content = model.file.download  # Assuming model.file is an ActiveStorage attachment
+    file_size = file_content.bytesize
+
+    # Define chunk size (e.g., 1024 bytes)
+    chunk_size = 1 * 1024
+    total_chunks = (file_size.to_f / chunk_size).ceil
+
+    # Split the file into chunks
+    chunks = file_content.scan(/.{1,#{chunk_size}}/m)
+
+    chunks.each_with_index do |chunk, index|
+      message = {
+        chunk_index: index + 1,
+        chunk_data: Base64.strict_encode64(chunk),  # Convert binary data to Base64
+        last_chunk: (index + 1 == total_chunks).to_s
+      }.to_json
+
+      client.publish(topic, message)
+    end
+
+    client.disconnect
+  rescue => e
+    Rails.logger.error "Failed to publish model file: #{e.message}"
+  end
+  
 end

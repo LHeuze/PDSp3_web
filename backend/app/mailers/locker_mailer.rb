@@ -37,9 +37,9 @@ class LockerMailer < ApplicationMailer
     mail(to: @owner_email, subject: 'La contraseña de tu casillero ha sido actualizada')
   end
 
-  def locker_notification_email(email, message)
-    @message = message
-    mail(to: email, subject: 'Locker Notification')
-  end
+  def locker_notification_email
+    @message = params[:message]
+    mail(to: params[:email], subject: 'Locker Notification')
+  end  
   
 end

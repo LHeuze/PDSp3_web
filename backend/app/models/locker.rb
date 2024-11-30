@@ -27,25 +27,37 @@ class Locker < ApplicationRecord
   def password_or_owner_email_changed?
     saved_change_to_password? || saved_change_to_owner_email?
   end
-  
-
-  def notify_password_change
-    MqttService.publish_locker_update(self)
-  end
 
   def send_password_change_notification
-    # Check if the owner email is present
-    return unless owner_email.present?
+    return unless owner_email.present? # Skip if there's no owner email
 
-    LockerMailer.locker_update_notification(self).deliver_now
+    begin
+      LockerMailer.locker_update_notification(self).deliver_now
+      Rails.logger.info "Locker ##{id}: Email notification sent to #{owner_email}."
+    rescue => e
+      Rails.logger.error "Locker ##{id}: Failed to send email notification: #{e.message}"
+    end
+
+    begin
+      MqttService.publish_locker_update(self)
+      Rails.logger.info "Locker ##{id}: MQTT message sent."
+    rescue => e
+      Rails.logger.error "Locker ##{id}: Failed to send MQTT message: #{e.message}"
+    end
   end
+
 
   def password_gestures_valid
     model = locker_administrator.model || locker_administrator.user.current_model
+    unless model
+      errors.add(:password, 'cannot be validated because no model is associated with the locker administrator.')
+      return
+    end
+  
     valid_gestures = model.gestures.pluck(:name)
-
     if password.any? { |gesture| !valid_gestures.include?(gesture) }
       errors.add(:password, 'contains gestures not present in the current model')
     end
   end
+  
 end
