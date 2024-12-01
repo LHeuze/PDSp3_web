@@ -68,7 +68,7 @@ module Api
             end
             
             def set_locker_administrator
-              @locker_administrator = LockerAdministrator.find_by(id: params[:id], user: @current_user)
+              @locker_administrator = LockerAdministrator.find_by(id: params[:id])
               render json: { error: 'Administrador de casilleros no encontrado.' }, status: :not_found unless @locker_administrator
             end
         end
