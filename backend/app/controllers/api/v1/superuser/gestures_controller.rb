@@ -4,7 +4,6 @@ module Api
       module Superuser
         class GesturesController < ApplicationController
           before_action :authenticate_request
-          before_action :set_model
           before_action :set_gesture, only: [:update, :destroy]
   
           def create
@@ -34,12 +33,10 @@ module Api
   
           private
   
-          def set_model
-            @model = Model.find(params[:model_id])
-          end
-  
           def set_gesture
-            @gesture = @model.gestures.find(params[:id])
+            @gesture = Gesture.find(params[:id])
+          rescue ActiveRecord::RecordNotFound
+            render json: { error: "Gesto no encontrado" }, status: :not_found
           end
   
           def gesture_params

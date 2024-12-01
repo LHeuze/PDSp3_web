@@ -31,13 +31,14 @@ module Api
         # GET /api/v1/superuser/models/:id
         def show
           render json: @model.as_json.merge({
-            gestures: @model.gestures.map { |gesture| 
+            gestures: @model.gestures.map { |gesture|
               {
+                id: gesture.id,  # Ensure the id is included
                 name: gesture.name,
-                image_url: Rails.application.routes.url_helpers.rails_blob_path(gesture.image, only_path: true)
+                image_url: Rails.application.routes.url_helpers.rails_blob_url(gesture.image, only_path: true)
               }
             }
-            })
+          })
         end
 
         # POST /api/v1/superuser/models
@@ -69,24 +70,12 @@ module Api
         # PUT /api/v1/superuser/models/:id
         def update
           if @model.update(model_update_params)
-            # Update file if provided
-            if params[:file].present?
-              @model.file.attach(params[:file])
-            end
-
-            # Update gesture images if provided
-            if params[:gesture_images].present?
-              @model.gesture_images.purge # Remove old images
-              params[:gesture_images].each do |_, image|
-                @model.gesture_images.attach(image)
-              end
-            end
-
             render json: @model, status: :ok
           else
             render json: { errors: @model.errors.full_messages }, status: :unprocessable_entity
           end
         end
+        
 
         # DELETE /api/v1/superuser/models/:id
         def destroy
@@ -104,13 +93,10 @@ module Api
           render json: { error: "Modelo no encontrado" }, status: :not_found unless @model
         end
 
-        def model_params
+        def model_update_params
           params.require(:model).permit(:name, :file)
         end
-
-        def model_update_params
-          params.permit(:name, gestures: [])
-        end
+        
       end
     end
   end
