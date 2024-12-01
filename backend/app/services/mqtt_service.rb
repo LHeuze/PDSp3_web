@@ -1,7 +1,7 @@
 class MqttService
   require 'mqtt'
   def self.generate_presigned_url(file)
-    Rails.application.routes.url_helpers.rails_blob_url(file, host: 'localhost:3000', protocol: 'http')
+    Rails.application.routes.url_helpers.rails_blob_url(file, host: 'https://pdsp3-web.onrender.com', protocol: 'https')
   end
   def self.publish_locker_update(locker)
     locker_admin = locker.locker_administrator
