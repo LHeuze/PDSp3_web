@@ -72,10 +72,15 @@ function UserManagement() {
         </TableContainer>
         <Button
           variant="contained"
-          sx={{ mt: 4, backgroundColor: '#f44336', color: '#fff', fontWeight: 'bold' }}
-          onClick={() => navigate('/superuser/dashboard')}
+          sx={{
+            mt: 4,
+            backgroundColor: "#3d3b4e",
+            color: "#f9f5e8",
+            fontWeight: "bold",
+          }}
+          onClick={() => navigate("/superuser/dashboard")}
         >
-          VOLVER AL DASHBOARD
+          Volver al Dashboard
         </Button>
       </Box>
     </Box>

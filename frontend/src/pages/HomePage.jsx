@@ -58,15 +58,18 @@ function HomePage() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        setLockerAdmins(response.data);
-        if (response.data.length > 0) {
-          fetchMetrics(response.data[0].id); // Load metrics for the first admin by default
+        const data = response.data;
+        // Ensure `data` is an array before setting state
+        setLockerAdmins(Array.isArray(data) ? data : []);
+        if (Array.isArray(data) && data.length > 0) {
+          fetchMetrics(data[0].id); // Load metrics for the first admin by default
         }
       })
       .catch(() => {
         setError('Error al cargar los administradores de casilleros.');
         setLoading(false);
       });
+
   }, []);
 
   const fetchMetrics = (adminId) => {
