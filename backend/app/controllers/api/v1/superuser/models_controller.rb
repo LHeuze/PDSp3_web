@@ -89,7 +89,7 @@ module Api
         private
 
         def set_model
-          @model = Model.find_by(id: params[:id], user: @current_user)
+          @model = Model.find_by(id: params[:id])
           render json: { error: "Modelo no encontrado" }, status: :not_found unless @model
         end
 
