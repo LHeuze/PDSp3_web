@@ -2,6 +2,8 @@ module Api
     module V1        
         class LockerAdministratorsController < ApplicationController
             before_action :authenticate_request
+            before_action :set_locker_administrator, only: [:update, :lockers, :destroy]
+
             def index
                 locker_administrators = LockerAdministrator.all
                 render json: locker_administrators.as_json(
@@ -33,12 +35,15 @@ module Api
 
             def lockers
                 locker_administrator = LockerAdministrator.find(params[:id])
-                
-                if locker_administrator.user_id == current_user.id
-                    render json: locker_administrator.lockers, status: :ok
-                else
-                    render json: { error: 'Unauthorized' }, status: :unauthorized
-                end
+                render json: locker_administrator.lockers, status: :ok
+            end
+
+            def destroy
+              if @locker_administrator.destroy
+                render json: { message: 'Administrador de casilleros eliminado correctamente.' }, status: :ok
+              else
+                render json: { errors: @locker_administrator.errors.full_messages }, status: :unprocessable_entity
+              end
             end
 
             private
@@ -48,15 +53,23 @@ module Api
             end
 
             def create_lockers(locker_admin)
-                locker_count = locker_admin.amount_of_lockers
-                (1..locker_count).each do |i|
-                  Locker.create!(
-                    name: "Casillero #{i}",
-                    number: i.to_s,
-                    owner_email: @current_user.email,
-                    locker_administrator_id: locker_admin.id
-                  )
-                end
+              locker_count = locker_admin.amount_of_lockers
+              (1..locker_count).each do |i|
+                Locker.create!(
+                  name: "Casillero #{i}",
+                  number: i.to_s,
+                  owner_email: @current_user.email,
+                  locker_administrator_id: locker_admin.id
+                )
+              rescue ActiveRecord::RecordInvalid => e
+                Rails.logger.error "Failed to create locker: #{e.message}"
+                raise e
+              end
+            end
+            
+            def set_locker_administrator
+              @locker_administrator = LockerAdministrator.find_by(id: params[:id], user: @current_user)
+              render json: { error: 'Administrador de casilleros no encontrado.' }, status: :not_found unless @locker_administrator
             end
         end
     end

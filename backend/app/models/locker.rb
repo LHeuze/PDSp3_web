@@ -4,7 +4,6 @@ class Locker < ApplicationRecord
   has_many :locker_events, dependent: :destroy
 
   validates :owner_email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validate :password_gestures_valid
 
   after_update :send_password_change_notification, if: :should_notify_owner?
 
@@ -42,17 +41,4 @@ class Locker < ApplicationRecord
     MqttService.publish_locker_update(self)
   end
 
-  def password_gestures_valid
-    model = locker_administrator.model
-    unless model
-      errors.add(:password, 'cannot be validated because no model is associated with the locker administrator.')
-      return
-    end
-
-    valid_gestures = model.gestures.pluck(:name)
-    invalid_gestures = password - valid_gestures
-    if invalid_gestures.any?
-      errors.add(:password, "contains invalid gestures: #{invalid_gestures.join(', ')}")
-    end
-  end
 end

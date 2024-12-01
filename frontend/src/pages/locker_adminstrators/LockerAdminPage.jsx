@@ -128,6 +128,29 @@ function LockerAdministratorsPage() {
     navigate(`/locker_administrators/${lockerAdministratorId}/lockers`);
   };
 
+  const handleDelete = (id) => {
+    const token = localStorage.getItem('authToken');
+    
+    if (window.confirm("¿Estás seguro de que quieres eliminar este administrador de casilleros y todos sus casilleros?")) {
+      axios
+        .delete(`${import.meta.env.VITE_API_BASE_URL}/api/v1/locker_administrators/${id}`, {
+          headers: {
+            Authorization: token,
+          },
+        })
+        .then(() => {
+          setAdministrators((prevAdmins) =>
+            prevAdmins.filter((admin) => admin.id !== id)
+          );
+          alert("Administrador eliminado correctamente.");
+        })
+        .catch((error) => {
+          console.error('Error deleting locker administrator:', error);
+          setError('Error eliminando el administrador de casilleros. Inténtalo de nuevo.');
+        });
+    }
+  };
+
   const handleBack = () => {
     navigate('/');
   };
@@ -307,6 +330,20 @@ function LockerAdministratorsPage() {
               >
                 VER CASILLEROS
               </Button>
+
+              <Button
+                variant="contained"
+                sx={{
+                  marginRight: 2,
+                  backgroundColor: '#f44336', // Red color for delete
+                  color: '#fff',
+                  fontWeight: 'bold',
+                }}
+                onClick={() => handleDelete(admin.id)} // Call the delete handler
+              >
+                ELIMINAR
+              </Button>
+
 
             </Card>
           </Grid>

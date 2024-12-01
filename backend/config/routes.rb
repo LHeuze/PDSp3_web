@@ -22,7 +22,7 @@ Rails.application.routes.draw do
       resources :lockers, only: [:index, :show, :update] do
         get 'events', on: :member
       end
-      resources :locker_administrators, only: [:index, :update, :create] do
+      resources :locker_administrators, only: [:index, :update, :create, :destroy] do
         get 'lockers', on: :member
       end
       post 'users/google_sign_in', to: 'users#google_sign_in'

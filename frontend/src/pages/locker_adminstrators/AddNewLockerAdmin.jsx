@@ -76,6 +76,7 @@ function AddNewLockerAdmin() {
           onChange={(e) => setName(e.target.value)}
           required
         />
+        <Typography sx = {{color:'black'}}> Ejemplo de Topico base: 'lockers/pepito/' (debe terminar en '/')</Typography>
         <TextField
           label="Topico base"
           variant="outlined"
