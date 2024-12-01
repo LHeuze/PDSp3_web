@@ -93,6 +93,10 @@ module Api
           render json: { error: "Modelo no encontrado" }, status: :not_found unless @model
         end
 
+        def model_params
+          params.permit(:name, :file, gestures: [:name, :image])
+        end
+
         def model_update_params
           params.require(:model).permit(:name, :file)
         end
