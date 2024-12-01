@@ -105,7 +105,7 @@ module Api
         end
 
         def model_params
-          params.permit(:name, :file, gestures: [:name, :image])
+          params.require(:model).permit(:name, :file)
         end
 
         def model_update_params

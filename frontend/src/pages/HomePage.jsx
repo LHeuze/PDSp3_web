@@ -211,11 +211,39 @@ function HomePage() {
                         <Typography variant="body1" sx={{ fontWeight: 'bold', mt: 2, mb: 1 }}>
                           Hora de Apertura Más Común
                         </Typography>
-                        <Typography variant="body2">
-                          {data?.most_common_opening_hour !== undefined
-                            ? `${data.most_common_opening_hour}:00`
-                            : 'No disponible'}
-                        </Typography>
+                        {data?.hourly_opening_counts ? (
+                          <Bar
+                            key={`bar-chart-hourly-opening-${lockerName}`}
+                            data={{
+                              labels: Object.keys(data.hourly_opening_counts), // e.g., ["0", "1", "2", ..., "23"]
+                              datasets: [
+                                {
+                                  label: 'Cantidad de Aperturas',
+                                  data: Object.values(data.hourly_opening_counts), // e.g., [5, 10, 0, ..., 8]
+                                  backgroundColor: 'limegreen',
+                                },
+                              ],
+                            }}
+                            options={{
+                              scales: {
+                                x: {
+                                  title: {
+                                    display: true,
+                                    text: 'Hora del Día',
+                                  },
+                                },
+                                y: {
+                                  title: {
+                                    display: true,
+                                    text: 'Cantidad de Aperturas',
+                                  },
+                                },
+                              },
+                            }}
+                          />
+                        ) : (
+                          <Typography variant="body2">No disponible</Typography>
+                        )}
 
                         <Typography variant="body1" sx={{ fontWeight: 'bold', mt: 2, mb: 1 }}>
                           Intervalo de Tiempo Promedio Entre Aperturas

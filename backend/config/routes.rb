@@ -15,7 +15,8 @@ Rails.application.routes.draw do
       patch '/user/update_model', to: 'models#update_user_model'
       namespace :superuser do
         get 'dashboard', to: 'dashboard#index'
-        resources :models
+        resources :models, only: [:index, :show, :create, :update, :destroy]
+        resources :gestures, only: [:update]
         resources :users
       end
       resources :lockers, only: [:index, :show, :update] do

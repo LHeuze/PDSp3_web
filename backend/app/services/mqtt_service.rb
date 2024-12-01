@@ -1,6 +1,8 @@
-require 'mqtt'
-
 class MqttService
+  require 'mqtt'
+  def self.generate_presigned_url(file)
+    Rails.application.routes.url_helpers.rails_blob_url(file, host: 'localhost:3000', protocol: 'http')
+  end
   def self.publish_locker_update(locker)
     locker_admin = locker.locker_administrator
     raise "Locker must belong to a LockerAdministrator" unless locker_admin
@@ -83,43 +85,32 @@ class MqttService
   def self.publish_model_file(locker_admin, model)
     raise "LockerAdministrator must be provided" unless locker_admin
     raise "Model must be provided" unless model
-
-    # MQTT connection details
+  
+    # Generate pre-signed URL
+    file_url = generate_presigned_url(model.file)
+  
     host = 'broker.emqx.io'
-    port = 8883  # Use SSL/TLS
-
+    port = 8883
+  
     client = MQTT::Client.connect(
       host: host,
       port: port,
       ssl: true
     )
-    Rails.logger.info "Connected to MQTT broker at #{host}:#{port}"
+  
     topic = "#{locker_admin.base_topic}model"
-
-    # Read the model file
-    file_content = model.file.download  # Assuming model.file is an ActiveStorage attachment
-    file_size = file_content.bytesize
-
-    # Define chunk size (e.g., 1024 bytes)
-    chunk_size = 1 * 1024
-    total_chunks = (file_size.to_f / chunk_size).ceil
-
-    # Split the file into chunks
-    chunks = file_content.scan(/.{1,#{chunk_size}}/m)
-
-    chunks.each_with_index do |chunk, index|
-      message = {
-        chunk_index: index + 1,
-        chunk_data: Base64.strict_encode64(chunk),  # Convert binary data to Base64
-        last_chunk: (index + 1 == total_chunks).to_s
-      }.to_json
-
-      client.publish(topic, message)
-    end
-
+  
+    # Send only the file URL
+    message = {
+      file_url: file_url
+    }.to_json
+  
+    client.publish(topic, message)
+    Rails.logger.info "Published file URL to topic #{topic}"
     client.disconnect
   rescue => e
     Rails.logger.error "Failed to publish model file: #{e.message}"
   end
+  
   
 end

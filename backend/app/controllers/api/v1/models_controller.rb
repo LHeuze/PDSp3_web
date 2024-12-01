@@ -19,11 +19,13 @@ module Api
                 return render json: { error: "Modelo no encontrado" }, status: :not_found unless new_model
               
                 if @current_user.update(current_model: new_model)
+                  Rails.logger.info "User #{@current_user.id} updated to model #{new_model.id}"
+              
                   # Update locker administrators' models
                   @current_user.locker_administrators.update_all(model_id: new_model.id)
-
-                  update_lockers_passwords(new_model)
+                  Rails.logger.info "LockerAdministrators for user #{@current_user.id} updated to model #{new_model.id}"
               
+                  update_lockers_passwords(new_model)
                   send_model_file_to_lockers(new_model)
               
                   render json: { message: "Modelo actualizado exitosamente" }, status: :ok
@@ -31,6 +33,7 @@ module Api
                   render json: { error: @current_user.errors.full_messages }, status: :unprocessable_entity
                 end
               end
+              
               
 
               private
@@ -59,9 +62,14 @@ module Api
 
               def send_model_file_to_lockers(model)
                 @current_user.locker_administrators.find_each do |locker_admin|
-                  MqttService.publish_model_file(locker_admin, model)
+                  begin
+                    MqttService.publish_model_file(locker_admin, model)
+                  rescue => e
+                    Rails.logger.error "Failed to send model file for LockerAdministrator #{locker_admin.id}: #{e.message}"
+                  end
                 end
               end
+              
         end
     end
 end
