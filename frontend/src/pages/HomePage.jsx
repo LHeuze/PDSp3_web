@@ -168,92 +168,93 @@ function HomePage() {
       >
         Métricas de Administradores de Casilleros
       </Typography>
+      <Box sx={{ maxWidth: 1200, margin: '0 auto', padding: 2 }}>
+        {lockerAdmins.length > 0 ? (
+          <>
+            <Tabs
+              value={selectedAdminIndex}
+              onChange={handleTabChange}
+              variant="scrollable"
+              scrollButtons="auto"
+              sx={{ marginBottom: 3, backgroundColor: '#fff', borderRadius: 1 }}
+            >
+              {lockerAdmins.map((admin, index) => (
+                <Tab
+                  key={admin.id}
+                  label={admin.name}
+                  sx={{
+                    textTransform: 'none',
+                    fontWeight: 'bold',
+                    color: index === selectedAdminIndex ? 'limegreen' : '#3d3b4e',
+                  }}
+                />
+              ))}
+            </Tabs>
 
-      {lockerAdmins.length > 0 ? (
-        <>
-          <Tabs
-            value={selectedAdminIndex}
-            onChange={handleTabChange}
-            variant="scrollable"
-            scrollButtons="auto"
-            sx={{ marginBottom: 3, backgroundColor: '#fff', borderRadius: 1 }}
-          >
-            {lockerAdmins.map((admin, index) => (
-              <Tab
-                key={admin.id}
-                label={admin.name}
-                sx={{
-                  textTransform: 'none',
-                  fontWeight: 'bold',
-                  color: index === selectedAdminIndex ? 'limegreen' : '#3d3b4e',
-                }}
-              />
-            ))}
-          </Tabs>
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <Grid container spacing={3} justifyContent="center">
+                {Object.entries(metrics).length > 0 ? (
+                  Object.entries(metrics).map(([lockerName, data]) => (
+                    <Grid item xs={12} md={6} key={lockerName}>
+                      <Card sx={{ backgroundColor: '#3d3b4e', color: '#f9f5e8', padding: 2 }}>
+                        <CardContent>
+                          <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
+                            {lockerName}
+                          </Typography>
 
-          {loading ? (
-            <CircularProgress />
-          ) : (
-            <Grid container spacing={3} justifyContent="center">
-              {Object.entries(metrics).length > 0 ? (
-                Object.entries(metrics).map(([lockerName, data]) => (
-                  <Grid item xs={12} md={6} key={lockerName}>
-                    <Card sx={{ backgroundColor: '#3d3b4e', color: '#f9f5e8', padding: 2 }}>
-                      <CardContent>
-                        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
-                          {lockerName}
-                        </Typography>
+                          <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 1 }}>
+                            Aperturas Totales por Día
+                          </Typography>
+                          <Bar
+                            key={`bar-chart-${lockerName}`}
+                            data={generateBarChart(data?.total_openings_per_day || {})}
+                          />
 
-                        <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 1 }}>
-                          Aperturas Totales por Día
-                        </Typography>
-                        <Bar
-                          key={`bar-chart-${lockerName}`}
-                          data={generateBarChart(data?.total_openings_per_day || {})}
-                        />
+                          <Typography variant="body1" sx={{ fontWeight: 'bold', mt: 2, mb: 1 }}>
+                            Hora de Apertura Más Común
+                          </Typography>
+                          <Typography variant="body2">
+                            {data?.most_common_opening_hour
+                              ? `${data.most_common_opening_hour} horas`
+                              : 'No disponible'}
+                          </Typography>
 
-                        <Typography variant="body1" sx={{ fontWeight: 'bold', mt: 2, mb: 1 }}>
-                          Hora de Apertura Más Común
-                        </Typography>
-                        <Typography variant="body2">
-                          {data?.most_common_opening_hour
-                            ? `${data.most_common_opening_hour} horas`
-                            : 'No disponible'}
-                        </Typography>
+                          <Typography variant="body1" sx={{ fontWeight: 'bold', mt: 2, mb: 1 }}>
+                            Intervalo de Tiempo Promedio Entre Aperturas
+                          </Typography>
+                          <Typography variant="body2">
+                            {data?.average_interval_between_openings
+                              ? `${data.average_interval_between_openings} horas`
+                              : 'No disponible'}
+                          </Typography>
 
-                        <Typography variant="body1" sx={{ fontWeight: 'bold', mt: 2, mb: 1 }}>
-                          Intervalo de Tiempo Promedio Entre Aperturas
-                        </Typography>
-                        <Typography variant="body2">
-                          {data?.average_interval_between_openings
-                            ? `${data.average_interval_between_openings} horas`
-                            : 'No disponible'}
-                        </Typography>
+                          <Typography variant="body1" sx={{ fontWeight: 'bold', mt: 2, mb: 1 }}>
+                            Tiempo Promedio Que Queda Abierto El Casillero
+                          </Typography>
+                          <Typography variant="body2">
+                            {data?.average_open_time
+                              ? `${data.average_open_time} minutos`
+                              : 'No disponible'}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))
+                ) : (
+                  <Typography variant="body2" color="textSecondary">
+                    No hay métricas disponibles para este administrador.
+                  </Typography>
+                )}
+              </Grid>
+            )}
 
-                        <Typography variant="body1" sx={{ fontWeight: 'bold', mt: 2, mb: 1 }}>
-                          Tiempo Promedio Que Queda Abierto El Casillero
-                        </Typography>
-                        <Typography variant="body2">
-                          {data?.average_open_time
-                            ? `${data.average_open_time} minutos`
-                            : 'No disponible'}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))
-              ) : (
-                <Typography variant="body2" color="textSecondary">
-                  No hay métricas disponibles para este administrador.
-                </Typography>
-              )}
-            </Grid>
-          )}
-
-        </>
-      ) : (
-        <Typography variant="body1">No hay administradores de casilleros disponibles.</Typography>
-      )}
+          </>
+        ) : (
+          <Typography variant="body1">No hay administradores de casilleros disponibles.</Typography>
+        )}
+      </Box>
     </Box>
   );
 }

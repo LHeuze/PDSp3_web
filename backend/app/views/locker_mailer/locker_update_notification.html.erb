@@ -3,10 +3,10 @@
 
 <h2>Instrucciones</h2>
 <p>1. Para abrir el casillero, acerca la mano al sensor en la caja para iniciar la interacción.</p>
-<p>2. Luego, selecciona el casillero que quieres abrir ({1, 2, 3}) usando el gesto correspondiente.</p>
+<p>2. Luego, selecciona el casillero que quieres abrir usando el gesto correspondiente.</p>
 <p>3. Finalmente, realiza los gestos indicados abajo con intermitencia de 4 segundos:</p>
 
 <% @gesture_images.each do |gesture| %>
   <p><strong>Gesto <%= gesture[:index] + 1 %>:</strong></p>
-  <img src="cid:<%= gesture[:content_id] %>" alt="Gesture <%= gesture[:index] + 1 %>" style="max-width: 100%; height: auto;" />
+  <img src="<%= gesture[:url] %>" alt="Gesto <%= gesture[:name] %>" style="max-width: 100%; height: auto;" />
 <% end %>
