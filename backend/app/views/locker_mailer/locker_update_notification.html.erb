@@ -8,5 +8,5 @@
 
 <% @gesture_images.each do |gesture| %>
   <p><strong>Gesto <%= gesture[:index] + 1 %>:</strong></p>
-  <img src="cid:<%= gesture[:filename] %>" alt="Gesture <%= gesture[:index] + 1 %>" style="max-width: 100%; height: auto;" />
+  <img src="cid:<%= gesture[:content_id] %>" alt="Gesture <%= gesture[:index] + 1 %>" style="max-width: 100%; height: auto;" />
 <% end %>

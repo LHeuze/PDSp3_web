@@ -1,9 +1,9 @@
 class MqttService
   require 'mqtt'
   def self.generate_presigned_url(file)
-    Rails.application.routes.url_helpers.rails_blob_url(file, host: 'https://pdsp3-web.onrender.com', disposition: 'attachment', public: true)
-
+    Rails.application.routes.url_helpers.rails_storage_proxy_url(file, host: 'https://pdsp3-web.onrender.com')
   end
+  
   def self.publish_locker_update(locker)
     locker_admin = locker.locker_administrator
     raise "Locker must belong to a LockerAdministrator" unless locker_admin

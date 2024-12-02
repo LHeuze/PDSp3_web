@@ -11,35 +11,50 @@ class LockerMailer < ApplicationMailer
       # Map gesture names to Gesture objects
       gesture_hash = model.gestures.includes(image_attachment: :blob).index_by(&:name)
 
-      # Prepare gesture images for the email
       @gesture_images = []
 
       @new_password.each_with_index do |gesture_name, index|
         gesture = gesture_hash[gesture_name]
         if gesture && gesture.image.attached?
-          # Attach the gesture image to the email
-          attachments.inline["gesture_#{gesture_name.downcase}.jpg"] = gesture.image.blob.download
+          file_extension = gesture.image.filename.extension
+          filename = "gesture_#{gesture_name.downcase}.#{file_extension}"
+          content_id = "#{filename}"  # Ensure unique and descriptive
 
-          # Add the gesture name and image filename to the array
+          # Attach the gesture image to the email
+          attachments.inline[filename] = {
+            mime_type: gesture.image.blob.content_type,
+            content: gesture.image.download
+          }
+
+          # Set the Content-ID directly on the attachment
+          attachments.inline[filename].content_id = "<#{content_id}>"
+
+          # Add the gesture details to the array for the view
           @gesture_images << {
             name: gesture_name,
             index: index,
-            filename: "gesture_#{gesture_name.downcase}.jpg"
+            filename: filename,
+            content_id: content_id
           }
         else
           Rails.logger.warn("No image found for gesture '#{gesture_name}'")
         end
       end
+
     else
       Rails.logger.warn("No model associated with the locker administrator's user.")
     end
 
-    mail(to: @owner_email, subject: 'La contraseña de tu casillero ha sido actualizada')
+    mail(
+      to: @owner_email,
+      subject: 'La contraseña de tu casillero ha sido actualizada'
+    ) do |format|
+      format.html
+    end
   end
 
   def locker_notification_email
     @message = params[:message]
     mail(to: params[:email], subject: 'Locker Notification')
   end  
-  
 end

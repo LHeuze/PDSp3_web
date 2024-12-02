@@ -5,7 +5,7 @@ class User < ApplicationRecord
   
   before_create :set_default_role
   enum role: { locker_admin: 'locker_admin', superuser: 'superuser' }
-  has_many :locker_administrators
+  has_many :locker_administrators, dependent: :destroy
   has_many :models
   belongs_to :current_model, class_name: 'Model', foreign_key: 'model_id', optional: true
 

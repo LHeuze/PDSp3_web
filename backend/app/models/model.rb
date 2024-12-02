@@ -3,7 +3,7 @@ class Model < ApplicationRecord
   belongs_to :user
   has_one_attached :file
   has_many :gestures, dependent: :destroy
-
+  has_many :locker_administrators, dependent: :nullify
   validates :name, presence: true
   validates :file, presence: true, on: :create
 
