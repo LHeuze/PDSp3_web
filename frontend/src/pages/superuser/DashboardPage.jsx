@@ -127,6 +127,13 @@ function SuperuserDashboard() {
             </Card>
           </Grid>
         </Grid>
+        <Button
+          variant="contained"
+          sx={{ mt: 4, backgroundColor: '#3d3b4e', color: '#fff', fontWeight: 'bold' }}
+          onClick={() => navigate('/')}
+        >
+          Volver
+        </Button>
         {/* New Metrics Cards */}
         <Box sx={{ maxWidth: 1200, margin: '0 auto', padding: 2 }}>
           <Grid container spacing={3} justifyContent="center" sx={{ mt: 4 }}>
@@ -200,13 +207,6 @@ function SuperuserDashboard() {
             </Card>
           </Box>
         </Box>
-        <Button
-          variant="contained"
-          sx={{ mt: 4, backgroundColor: '#3d3b4e', color: '#fff', fontWeight: 'bold' }}
-          onClick={() => navigate('/')}
-        >
-          Volver
-        </Button>
       </Box>
     </Box>
   );
