@@ -93,37 +93,46 @@ end
 # Helper method to create realistic opening and closing events
 def seed_locker_events(locker, days_ago_start, days_ago_end)
   total_days = (days_ago_end - days_ago_start).abs + 1
-  (days_ago_start..days_ago_end).each do |days_ago|
-    # Random number of events per day (e.g., 1 to 3)
+  puts "Seeding #{total_days} days of events for locker #{locker.name}..."
+
+  days_range = if days_ago_start <= days_ago_end
+                 (days_ago_start..days_ago_end).to_a
+               else
+                 days_ago_start.downto(days_ago_end).to_a
+               end
+
+  days_range.each do |days_ago|
     events_per_day = rand(1..3)
+    puts "Day: #{days_ago}, Events: #{events_per_day}"
     events_per_day.times do
-      # Random time during the day between 8 AM and 8 PM
       hour = rand(8..20)
       minute = rand(0..59)
       opening_time = Time.now - days_ago.days - hour.hours - minute.minutes
       closing_time = opening_time + 5.minutes
 
-      # Ensure closing time is before now
       next if closing_time > Time.now
 
-      # Create opening event
-      locker.locker_events.create!(
-        event_type: "opened",
-        event_timestamp: opening_time
-      )
-
-      # Create closing event
-      locker.locker_events.create!(
-        event_type: "closed",
-        event_timestamp: closing_time
-      )
+      begin
+        locker.locker_events.create!(
+          event_type: "opened",
+          event_timestamp: opening_time
+        )
+        locker.locker_events.create!(
+          event_type: "closed",
+          event_timestamp: closing_time
+        )
+        puts "Created events for locker #{locker.name} on #{opening_time.strftime('%Y-%m-%d %H:%M:%S')}"
+      rescue => e
+        puts "Failed to create event: #{e.message}"
+      end
     end
   end
 end
 
-# Seed events for each locker over the past 12 days
-seed_locker_events(locker1, 12, 1)
-seed_locker_events(locker2, 12, 1)
-seed_locker_events(locker3, 12, 1)
+
+
+seed_locker_events(locker1, 7, 1)
+seed_locker_events(locker2, 7, 1)
+seed_locker_events(locker3, 7, 1)
 
 puts "Seeding completed."
