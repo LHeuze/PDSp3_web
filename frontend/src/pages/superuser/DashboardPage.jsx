@@ -128,77 +128,78 @@ function SuperuserDashboard() {
           </Grid>
         </Grid>
         {/* New Metrics Cards */}
-        <Grid container spacing={3} justifyContent="center" sx={{ mt: 4 }}>
-          <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen' }}>
-              <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6">Usuarios Activos</Typography>
-                <Typography variant="h3" sx={{ mt: 2 }}>
-                  {metrics.active_users_count}
-                </Typography>
+        <Box sx={{ maxWidth: 1200, margin: '0 auto', padding: 2 }}>
+          <Grid container spacing={3} justifyContent="center" sx={{ mt: 4 }}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen' }}>
+                <CardContent sx={{ textAlign: 'center' }}>
+                  <Typography variant="h6">Usuarios Activos</Typography>
+                  <Typography variant="h3" sx={{ mt: 2 }}>
+                    {metrics.active_users_count}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen' }}>
+                <CardContent sx={{ textAlign: 'center' }}>
+                  <Typography variant="h6">Controladores Activos</Typography>
+                  <Typography variant="h3" sx={{ mt: 2 }}>
+                    {metrics.active_controllers_count}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen' }}>
+                <CardContent sx={{ textAlign: 'center' }}>
+                  <Typography variant="h6">Casilleros Activos</Typography>
+                  <Typography variant="h3" sx={{ mt: 2 }}>
+                    {metrics.active_lockers_count}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen' }}>
+                <CardContent sx={{ textAlign: 'center' }}>
+                  <Typography variant="h6">Tiempo Promedio de Apertura</Typography>
+                  <Typography variant="h3" sx={{ mt: 2 }}>
+                    {metrics.average_open_time} min
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+          {/* Charts */}
+          <Box sx={{ mt: 6 }}>
+            <Typography variant="h5" sx={{ color: '#3d3b4e', fontWeight: 'bold', mb: 2 }}>
+              Aperturas Totales de Casilleros en los Últimos 7 Días
+            </Typography>
+            <Bar data={totalOpeningsData} options={{ responsive: true }} />
+          </Box>
+          <Box sx={{ mt: 6 }}>
+            <Typography variant="h5" sx={{ color: '#3d3b4e', fontWeight: 'bold', mb: 2 }}>
+              Horas Pico de Uso de Casilleros
+            </Typography>
+            <Bar data={peakUsageData} options={{ responsive: true }} />
+          </Box>
+          {/* Top Lockers by Openings */}
+          <Box sx={{ mt: 6 }}>
+            <Typography variant="h5" sx={{ color: '#3d3b4e', fontWeight: 'bold', mb: 2 }}>
+              Top Casilleros por Aperturas
+            </Typography>
+            <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen', maxWidth: 600, margin: '0 auto' }}>
+              <CardContent>
+                {metrics.top_lockers_by_openings.map((locker, index) => (
+                  <Typography key={index} variant="h6">
+                    {index + 1}. {locker.locker_name} - {locker.openings} aperturas
+                  </Typography>
+                ))}
               </CardContent>
             </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen' }}>
-              <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6">Controladores Activos</Typography>
-                <Typography variant="h3" sx={{ mt: 2 }}>
-                  {metrics.active_controllers_count}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen' }}>
-              <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6">Casilleros Activos</Typography>
-                <Typography variant="h3" sx={{ mt: 2 }}>
-                  {metrics.active_lockers_count}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen' }}>
-              <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6">Tiempo Promedio de Apertura</Typography>
-                <Typography variant="h3" sx={{ mt: 2 }}>
-                  {metrics.average_open_time} min
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-        {/* Charts */}
-        <Box sx={{ mt: 6 }}>
-          <Typography variant="h5" sx={{ color: '#3d3b4e', fontWeight: 'bold', mb: 2 }}>
-            Aperturas Totales de Casilleros en los Últimos 7 Días
-          </Typography>
-          <Bar data={totalOpeningsData} options={{ responsive: true }} />
+          </Box>
         </Box>
-        <Box sx={{ mt: 6 }}>
-          <Typography variant="h5" sx={{ color: '#3d3b4e', fontWeight: 'bold', mb: 2 }}>
-            Horas Pico de Uso de Casilleros
-          </Typography>
-          <Bar data={peakUsageData} options={{ responsive: true }} />
-        </Box>
-        {/* Top Lockers by Openings */}
-        <Box sx={{ mt: 6 }}>
-          <Typography variant="h5" sx={{ color: '#3d3b4e', fontWeight: 'bold', mb: 2 }}>
-            Top Casilleros por Aperturas
-          </Typography>
-          <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen', maxWidth: 600, margin: '0 auto' }}>
-            <CardContent>
-              {metrics.top_lockers_by_openings.map((locker, index) => (
-                <Typography key={index} variant="h6">
-                  {index + 1}. {locker.locker_name} - {locker.openings} aperturas
-                </Typography>
-              ))}
-            </CardContent>
-          </Card>
-        </Box>
-        {/* Back Button */}
         <Button
           variant="contained"
           sx={{ mt: 4, backgroundColor: '#3d3b4e', color: '#fff', fontWeight: 'bold' }}
