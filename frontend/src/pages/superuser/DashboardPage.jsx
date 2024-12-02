@@ -111,7 +111,21 @@ function SuperuserDashboard() {
               </CardContent>
             </Card>
           </Grid>
-          {/* ... other existing cards ... */}
+          <Grid item xs={12} sm={6} md={4}>
+            <Card sx={{ backgroundColor: '#3d3b4e', color: 'limegreen', height: '100%' }}>
+              <CardContent sx={{ textAlign: 'center' }}>
+                <Typography variant="h6">Gestionar Modelos</Typography>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  sx={{ mt: 2, backgroundColor: 'limegreen', color: '#3d3b4e' }}
+                  onClick={() => navigate('/models')}
+                >
+                  Ver Modelos
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
         {/* New Metrics Cards */}
         <Grid container spacing={3} justifyContent="center" sx={{ mt: 4 }}>

@@ -1,7 +1,7 @@
 class SuperuserMetricsService
   def self.system_overview
     {
-      active_users_count: User.where(role: 'admin_locker').count,
+      active_users_count: User.where(role:'locker_admin').count,
       active_controllers_count: LockerAdministrator.count,
       active_lockers_count: Locker.count,
       total_openings_last_7_days: total_openings_last_7_days,
